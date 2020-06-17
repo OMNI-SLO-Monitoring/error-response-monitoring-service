@@ -47,7 +47,7 @@ $ npm run start:dev
 $ npm run start:prod
 ```
 ## How to use it
-- Go to `localhost:3400` and the monitor is ready to receive error messages
+- Send post requests to `localhost:3400` 
 - Go to `http://localhost:3400/messages` to have an overview of sent Log Messages
 
 ## Support
