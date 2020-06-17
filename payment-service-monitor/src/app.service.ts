@@ -11,16 +11,15 @@ export class AppService {
 
   constructor(private logger: IssueLoggingService) { }
 
+  /**
+ * 
+ * @param logType the LogType of the error, One of 'ERROR', 'CPU', 'CB_OPEN', 'TIMEOUT'
+ * @param message message of the error
+ * 
+ * creation of a log message and pushing that message into array 'messages'
+ */
 
   async createLogMsg(logType: LogType, message: string) {
- 
-    this.logger.log({
-      type: logType,
-      time: this.time,
-      source: this.priceServiceUrl,
-      target: this.issueCreatorUrl,
-      message: message
-    });
     let logMsg: LogMessageFormat = {
       type: logType,
       time: this.time,
@@ -31,8 +30,29 @@ export class AppService {
     this.messages.push(logMsg);
     return logMsg;
   }
+  /**
+   * 
+   * @param logType the LogType of the error, One of 'ERROR', 'CPU', 'CB_OPEN', 'TIMEOUT'
+   * @param message message of the error
+   * 
+   * sending the log message to issue creator on localhost:3500 via IssueLoggingService
+   */
 
-  getAllMessages(){
+  sendLogMessage(logType: LogType, message: string) {
+    this.logger.log({
+      type: logType,
+      time: this.time,
+      source: this.priceServiceUrl,
+      target: this.issueCreatorUrl,
+      message: message
+    });
+  }
+  
+  /**
+   * returns all log messages created
+   */
+
+  getAllMessages() {
     return [...this.messages];
   }
 }
