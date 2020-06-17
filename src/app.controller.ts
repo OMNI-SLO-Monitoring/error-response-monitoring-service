@@ -1,12 +1,24 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Post, Body, Render } from '@nestjs/common';
 import { AppService } from './app.service';
+import { LogType } from 'logging-format';
 
 @Controller()
 export class AppController {
   constructor(private readonly appService: AppService) {}
 
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
+ 
+  @Post()
+  async convertIntoLog(
+    @Body('message') message: string,
+    @Body('type') logType: LogType
+  ) {
+      const logMsg = this.appService.createLogMsg(logType,message);
+      return 'log message created!';
+  }
+
+  @Get('messages')
+  @Render('index.hbs')
+  root() {
+    return this.appService.getAllMessages();
   }
 }

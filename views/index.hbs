@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Paymentsystem-Service-Monitoring</title>
+    <style>
+        h1,
+        h2,
+        h3 {
+            font-weight: 690;
+        }
+
+
+        body {
+            margin: 20;
+            font-family: "Gill Sans Extrabold", Helvetica, sans-serif;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="title">
+        <h1> Paymentsystem Service Monitoring </h1>
+        <h2> Log Messages </h2>
+      
+        {{#each this}}
+        <h3> Log Message </h3>
+        <p> Type: {{type}} | Time: {{time}} | Source: {{source}} | Target: {{target}}</p>
+        <p> Message: {{message}} </p>
+        {{/each}}
+    </div>
+</body>
+
+</html>
