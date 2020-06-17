@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Render } from '@nestjs/common';
 import { AppService } from './app.service';
-import { LogType } from 'logging-format';
+import { LogType} from 'logging-format';
 
 @Controller()
 export class AppController {
@@ -17,8 +17,7 @@ export class AppController {
   }
 
   @Get('messages')
-  @Render('index.hbs')
-  root() {
+  getAllMessages(){
     return this.appService.getAllMessages();
   }
 }

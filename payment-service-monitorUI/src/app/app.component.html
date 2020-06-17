@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paymentsystem-Service-Monitoring</title>
+  <style>
+    h1,
+    h2,
+    h3 {
+      font-weight: 800;
+    }
+  </style>
+</head>
+
+<body>
+  <div>
+    <h1> Paymentsystem Service Monitoring </h1>
+    <h2> Log Messages </h2>
+    <ul *ngIf="messages">
+      <li *ngFor="let message of messages; index as i">
+        <h3> Log Message Number {{i+1}}</h3>
+        <p>Type: {{message.type}} | Time: {{message.time}} | Target: {{message.target}} | Source: {{message.source}}</p>
+        <p>Message: {{message.message}}</p>
+      </li>
+    </ul>
+
+  </div>
+</body>
+
+</html>
