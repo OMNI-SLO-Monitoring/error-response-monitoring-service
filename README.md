@@ -26,7 +26,7 @@
 
 ## Description
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+This monitoring service receives a signal from the paymentsystem-service, once it receives an error response from paymentsystem-service and evaluates it, it sends a Log Message to the Issue Creator
 
 ## Installation
 
@@ -46,19 +46,9 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
+## How to use it
+- Go to `localhost:3400` and the monitor is ready to receive error messages
+- Go to `http://localhost:3400` to have an overview of sent Log Messages
 
 ## Support
 
