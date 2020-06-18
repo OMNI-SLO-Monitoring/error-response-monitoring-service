@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Render } from '@nestjs/common';
 import { AppService } from './app.service';
-import { LogType } from 'logging-format';
+import { LogMessageFormat } from 'logging-format';
 
 @Controller()
 export class AppController {
@@ -16,11 +16,9 @@ export class AppController {
 
   @Post()
   async convertIntoLog(
-    @Body('message') message: string,
-    @Body('type') logType: LogType
-  ) {
-    this.appService.createLogMsg(logType, message);
-    this.appService.sendLogMessage(logType, message);
+    @Body() logMessage: LogMessageFormat) {
+    this.appService.createLogMsg(logMessage);
+    this.appService.sendLogMessage(logMessage);
     return 'log message created!';
   }
   

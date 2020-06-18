@@ -7,7 +7,7 @@ export class AppService {
   messages: LogMessageFormat[] = [];
   priceServiceUrl = "http://localhost:3300";
   issueCreatorUrl = "http://localhost:3500";
-  time = new Date().getTime()
+  //time = new Date().getTime()
 
   constructor(private logger: IssueLoggingService) { }
 
@@ -19,13 +19,13 @@ export class AppService {
  * creation of a log message and pushing that message into array 'messages'
  */
 
-  async createLogMsg(logType: LogType, message: string) {
+  async createLogMsg(logMessage : LogMessageFormat) {
     let logMsg: LogMessageFormat = {
-      type: logType,
-      time: this.time,
-      source: this.priceServiceUrl,
-      target: this.issueCreatorUrl,
-      message: message
+      type: logMessage.type,
+      time: logMessage.time,
+      source: logMessage.source,
+      target: logMessage.target,
+      message: logMessage.message
     }
     this.messages.push(logMsg);
     return logMsg;
@@ -38,13 +38,13 @@ export class AppService {
    * sending the log message to issue creator on localhost:3500 via IssueLoggingService
    */
 
-  sendLogMessage(logType: LogType, message: string) {
+  sendLogMessage(logMessage : LogMessageFormat) {
     this.logger.log({
-      type: logType,
-      time: this.time,
-      source: this.priceServiceUrl,
-      target: this.issueCreatorUrl,
-      message: message
+      type: logMessage.type,
+      time: logMessage.time,
+      source: logMessage.source,
+      target: logMessage.target,
+      message: logMessage.message
     });
   }
   
