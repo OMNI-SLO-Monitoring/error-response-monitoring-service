@@ -5,21 +5,16 @@ import { LogType, LogMessageFormat } from 'logging-format';
 @Injectable()
 export class AppService {
   messages: LogMessageFormat[] = [];
-  priceServiceUrl = "http://localhost:3300";
-  issueCreatorUrl = "http://localhost:3500";
-  //time = new Date().getTime()
 
   constructor(private logger: IssueLoggingService) { }
 
   /**
- * 
- * @param logType the LogType of the error, One of 'ERROR', 'CPU', 'CB_OPEN', 'TIMEOUT'
- * @param message message of the error
- * 
- * creation of a log message and pushing that message into array 'messages'
- */
+   * 
+   * @param logMessage log message in the LogMessageFormat
+   * creation of a log message and pushing that message into array 'messages'
+   */
 
-  async createLogMsg(logMessage : LogMessageFormat) {
+  async createLogMsg(logMessage: LogMessageFormat) {
     let logMsg: LogMessageFormat = {
       type: logMessage.type,
       time: logMessage.time,
@@ -32,13 +27,11 @@ export class AppService {
   }
   /**
    * 
-   * @param logType the LogType of the error, One of 'ERROR', 'CPU', 'CB_OPEN', 'TIMEOUT'
-   * @param message message of the error
-   * 
+   * @param logMessage log message in the LogMessageFormat
    * sending the log message to issue creator on localhost:3500 via IssueLoggingService
    */
 
-  sendLogMessage(logMessage : LogMessageFormat) {
+  sendLogMessage(logMessage: LogMessageFormat) {
     this.logger.log({
       type: logMessage.type,
       time: logMessage.time,
@@ -47,7 +40,7 @@ export class AppService {
       message: logMessage.message
     });
   }
-  
+
   /**
    * returns all log messages created
    */

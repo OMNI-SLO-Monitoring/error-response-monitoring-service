@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Render } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LogMessageFormat } from 'logging-format';
 
@@ -6,14 +6,12 @@ import { LogMessageFormat } from 'logging-format';
 export class AppController {
   constructor(private readonly appService: AppService) { }
 
-/**
-   * @param message the message that the error message sends
-   * @param logType the logType of the error
+  /**
    * 
+   * @param logMessage logMessage sent by caching service
    * converts an error message from a post request into the LogMessage and sends it to localhost:3500 to the issue creator. 
    * on success the message 'log message created!' will be displayed
    */
-
   @Post()
   async convertIntoLog(
     @Body() logMessage: LogMessageFormat) {
@@ -21,7 +19,7 @@ export class AppController {
     this.appService.sendLogMessage(logMessage);
     return 'log message created!';
   }
-  
+
   /**
    * Json array sits on localhost:3400/messages containing all messages since server start. Returned Json array is used for UI
    */
