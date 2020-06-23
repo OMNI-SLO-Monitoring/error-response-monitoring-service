@@ -4,17 +4,16 @@ import { LogMessageFormat } from 'logging-format';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) { }
+  constructor(private readonly appService: AppService) {}
 
   /**
-   * 
+   *
    * @param logMessage logMessage sent by caching service
-   * converts an error message from a post request into the LogMessage and sends it to localhost:3500 to the issue creator. 
+   * converts an error message from a post request into the LogMessage and sends it to localhost:3500 to the issue creator.
    * on success the message 'log message created!' will be displayed
    */
   @Post()
-  async convertIntoLog(
-    @Body() logMessage: LogMessageFormat) {
+  async convertIntoLog(@Body() logMessage: LogMessageFormat) {
     this.appService.createLogMsg(logMessage);
     this.appService.sendLogMessage(logMessage);
     return 'log message created!';
