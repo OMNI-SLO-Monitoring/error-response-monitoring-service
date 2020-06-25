@@ -10,11 +10,43 @@ export class RequestSenderService {
   private receivedType: any;
   //expected response type
   private expectedType: any;
+  //error message for false response type
+  private errorResponseMsg = 'Incorrect Response Type';
+  //error message for false status code
+  private falseStatusCodeMsg = 'Incorrect Status Code';
 
   constructor(
     private httpService: HttpService,
     private logCreator: AppService,
   ) {}
+
+  /**
+   * Upon failure, this method creates a log and sends it to the issue creator component
+   * @param errorSource the source of error
+   * @param errorMessage the message of the error
+   * @param expectedData the response type that is expected to be returned
+   * @param receivedData the response type that is actually returned
+   */
+  createAndSendLog(
+    errorSource: string,
+    errorMessage,
+    expectedData,
+    receivedData,
+  ): void {
+    const log: LogMessageFormat = {
+      type: LogType.ERROR,
+      time: Date.now(),
+      source: errorSource,
+      detector: 'Error Response Monitor',
+      message: errorMessage,
+      data: {
+        expected: expectedData,
+        result: receivedData,
+      },
+    };
+    this.logCreator.createLogMsg(log);
+    this.logCreator.sendLogMessage(log);
+  }
 
   /**
    * Makes a request based on the request parameters inside post body
@@ -27,30 +59,61 @@ export class RequestSenderService {
     this.expectedType = requestParams.responseType;
     switch (requestParams.httpMethod) {
       case 'get': {
-        const res = await this.httpService.get(this.requestUrl).toPromise();
-        this.receivedType = typeof res.data;
-        if (this.receivedType === this.expectedType) {
-          return res.data;
-        } else {
-          const log: LogMessageFormat = {
-            type: LogType.ERROR,
-            time: Date.now(),
-            source: this.requestUrl,
-            detector: 'Error Response Monitor',
-            message: 'Incorrect Response Type',
-            data: {
-              expected: this.expectedType,
-              result: this.receivedType,
-            },
-          };
-          this.logCreator.createLogMsg(log);
-          this.logCreator.sendLogMessage(log);
-          throw new Error('Incorrect Response Type');
+        try {
+          const res = await this.httpService.get(this.requestUrl).toPromise();
+          this.receivedType = typeof res.data;
+          if (this.receivedType === this.expectedType) {
+            return res.data;
+          } else {
+            this.createAndSendLog(
+              this.requestUrl,
+              this.errorResponseMsg,
+              this.expectedType,
+              this.receivedType,
+            );
+            return this.errorResponseMsg;
+          }
+        } catch (err) {
+          this.createAndSendLog(
+            this.requestUrl,
+            err.message,
+            this.expectedType,
+            this.receivedType,
+          );
+          throw new Error(err);
         }
       }
       case 'post': {
-        console.log('post request');
-        break;
+        console.log(this.expectedType);
+        try {
+          const res = await this.httpService
+            .post(this.requestUrl, { body: `${requestParams.postBody}` })
+            .toPromise();
+          this.receivedType = res.status;
+          if (this.receivedType.toString() === this.expectedType) {
+            return `Status: ${res.status} | ${res.data}`;
+          } else {
+            this.createAndSendLog(
+              this.requestUrl,
+              this.falseStatusCodeMsg,
+              this.expectedType,
+              this.receivedType,
+            );
+            return this.falseStatusCodeMsg;
+          }
+        } catch (err) {
+          if (this.expectedType === err.response.status.toString()) {
+            return `Status: ${err.response.status}`;
+          } else {
+            this.createAndSendLog(
+              this.requestUrl,
+              err.message,
+              this.expectedType,
+              err.response.status,
+            );
+            return this.falseStatusCodeMsg;
+          }
+        }
       }
     }
   }
