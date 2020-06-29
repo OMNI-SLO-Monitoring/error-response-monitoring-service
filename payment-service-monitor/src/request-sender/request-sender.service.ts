@@ -11,9 +11,7 @@ export class RequestSenderService {
   //expected response type
   private expectedType: any;
   //error message for false response type
-  private errorResponseMsg = 'Incorrect Response Type';
-  //error message for false status code
-  private falseStatusCodeMsg = 'Incorrect Status Code';
+  private errorResponseMsg = 'Incorrect Parameters';
 
   constructor(
     private httpService: HttpService,
@@ -21,7 +19,8 @@ export class RequestSenderService {
   ) {}
 
   /**
-   * Upon failure, this method creates a log and sends it to the issue creator component
+   * Upon failure, this method creates a log and sends it to the issue creator component and
+   * stores the log in an array in the backend
    * @param errorSource the source of error
    * @param errorMessage the message of the error
    * @param expectedData the response type that is expected to be returned
@@ -32,7 +31,7 @@ export class RequestSenderService {
     errorMessage,
     expectedData,
     receivedData,
-  ): void {
+  ): LogMessageFormat {
     const log: LogMessageFormat = {
       type: LogType.ERROR,
       time: Date.now(),
@@ -46,12 +45,14 @@ export class RequestSenderService {
     };
     this.logCreator.createLogMsg(log);
     this.logCreator.sendLogMessage(log);
+    return log;
   }
 
   /**
    * Makes a request based on the request parameters inside post body
    * and evaluates whether the expected type and the received type of
-   * the response match. If not, a log is created and sent to the issue creator
+   * the response match. If not, a log is created and sent to the issue creator.
+   * An appropriate response with the log is additionally returned for the UI to display.
    * @param requestParams post body with request parameters
    */
   async makeRequest(requestParams: any): Promise<any> {
@@ -63,55 +64,54 @@ export class RequestSenderService {
           const res = await this.httpService.get(this.requestUrl).toPromise();
           this.receivedType = typeof res.data;
           if (this.receivedType === this.expectedType) {
-            return res.data;
+            return { msg: res.data, log: null };
           } else {
-            this.createAndSendLog(
+            const log = this.createAndSendLog(
               this.requestUrl,
               this.errorResponseMsg,
               this.expectedType,
               this.receivedType,
             );
-            return this.errorResponseMsg;
+            return { msg: this.errorResponseMsg, log: log };
           }
         } catch (err) {
-          this.createAndSendLog(
+          const log = this.createAndSendLog(
             this.requestUrl,
-            err.message,
+            this.errorResponseMsg,
             this.expectedType,
-            this.receivedType,
+            `${err.response.status} Status Code`,
           );
-          throw new Error(err);
+          return { msg: err.message, log: log };
         }
       }
       case 'post': {
-        console.log(this.expectedType);
         try {
           const res = await this.httpService
             .post(this.requestUrl, { body: `${requestParams.postBody}` })
             .toPromise();
           this.receivedType = res.status;
           if (this.receivedType.toString() === this.expectedType) {
-            return `Status: ${res.status} | ${res.data}`;
+            return { msg: `Status: ${res.status} | ${res.data}`, log: null };
           } else {
-            this.createAndSendLog(
+            const log = this.createAndSendLog(
               this.requestUrl,
-              this.falseStatusCodeMsg,
+              this.errorResponseMsg,
               this.expectedType,
-              this.receivedType,
+              `${this.receivedType} Status Code`,
             );
-            return this.falseStatusCodeMsg;
+            return { msg: this.errorResponseMsg, log: log };
           }
         } catch (err) {
           if (this.expectedType === err.response.status.toString()) {
-            return `Status: ${err.response.status}`;
+            return { msg: `Status: ${err.response.status}`, log: null };
           } else {
-            this.createAndSendLog(
+            const log = this.createAndSendLog(
               this.requestUrl,
-              err.message,
+              this.errorResponseMsg,
               this.expectedType,
-              err.response.status,
+              `${err.response.status} Status Code`,
             );
-            return this.falseStatusCodeMsg;
+            return { msg: this.errorResponseMsg, log: log };
           }
         }
       }
