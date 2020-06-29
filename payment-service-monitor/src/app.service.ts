@@ -24,7 +24,6 @@ export class AppService {
       data: logMessage.data,
     };
     this.messages.push(logMsg);
-    return logMsg;
   }
   /**
    *
