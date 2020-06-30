@@ -8,15 +8,14 @@ export class AppController {
 
   /**
    *
-   * @param logMessage logMessage sent by caching service
-   * converts an error message from a post request into the LogMessage and sends it to localhost:3500 to the issue creator.
-   * on success the message 'log message created!' will be displayed
+   * @param logMessage logMessage sent by price service
+   * converts an error message from a post request into the LogMessage 
+   * and sends it to localhost:3500 to the issue creator.
    */
   @Post()
   async convertIntoLog(@Body() logMessage: LogMessageFormat) {
     this.appService.createLogMsg(logMessage);
     this.appService.sendLogMessage(logMessage);
-    return 'log message created!';
   }
 
   /**

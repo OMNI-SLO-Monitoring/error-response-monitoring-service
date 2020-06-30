@@ -6,9 +6,9 @@ import { LogType, LogMessageFormat } from 'logging-format';
 export class RequestSenderService {
   //url endpoint for request
   private requestUrl: string;
-  //data that is being returned upon request
+  //data type of data that is being returned upon request
   private receivedType: any;
-  //expected response type
+  //expected response type of returned data
   private expectedType: any;
   //error message for false response type
   private errorResponseMsg = 'Incorrect Parameters';
@@ -28,7 +28,7 @@ export class RequestSenderService {
    */
   createAndSendLog(
     errorSource: string,
-    errorMessage,
+    errorMessage: string,
     expectedData,
     receivedData,
   ): LogMessageFormat {
@@ -77,7 +77,7 @@ export class RequestSenderService {
         } catch (err) {
           const log = this.createAndSendLog(
             this.requestUrl,
-            this.errorResponseMsg,
+            err.message,
             this.expectedType,
             `${err.response.status} Status Code`,
           );
