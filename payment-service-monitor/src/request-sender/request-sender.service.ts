@@ -79,7 +79,7 @@ export class RequestSenderService {
             this.requestUrl,
             err.message,
             this.expectedType,
-            `${err.response.status} Status Code`,
+            err.message,
           );
           return { msg: err.message, log: log };
         }
