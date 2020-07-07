@@ -1,15 +1,19 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LogMessageFormat } from 'logging-format';
+import { RequestSenderService } from './request-sender/request-sender.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
+  constructor(
+    private readonly appService: AppService,
+    private requestSender: RequestSenderService,
+  ) {}
 
   /**
    *
    * @param logMessage logMessage sent by price service
-   * converts an error message from a post request into the LogMessage 
+   * converts an error message from a post request into the LogMessage
    * and sends it to localhost:3500 to the issue creator.
    */
   @Post()
@@ -25,5 +29,14 @@ export class AppController {
   @Get('messages')
   getAllMessages() {
     return this.appService.getAllMessages();
+  }
+
+  /**
+   * The request sent by the account service will go to this endpoint and
+   * will be transferred to the database service
+   */
+  @Get()
+  transferRequest() {
+    this.requestSender.transferRequest();
   }
 }

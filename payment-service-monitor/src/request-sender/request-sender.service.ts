@@ -19,6 +19,11 @@ export class RequestSenderService {
   ) {}
 
   /**
+   * Transfers the request to the database service
+   */
+  transferRequest() {}
+
+  /**
    * Upon failure, this method creates a log and sends it to the issue creator component and
    * stores the log in an array in the backend
    * @param errorSource the source of error
