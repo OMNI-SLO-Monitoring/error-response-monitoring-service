@@ -27,7 +27,7 @@ export class AppController {
    */
 
   @Get('messages')
-  getAllMessages() {
+  async getAllMessages() {
     return this.appService.getAllMessages();
   }
 
@@ -35,8 +35,8 @@ export class AppController {
    * The request sent by the account service will go to this endpoint and
    * will be transferred to the database service
    */
-  @Get()
-  transferRequest() {
-    this.requestSender.transferRequest();
+  @Get('account-value')
+  async requestAccountValue() {
+    return this.requestSender.fetchAccountValue();
   }
 }
