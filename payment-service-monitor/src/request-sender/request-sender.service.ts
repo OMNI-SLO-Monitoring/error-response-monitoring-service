@@ -102,8 +102,11 @@ export class RequestSenderService {
             return { msg: this.errorResponseMsg, log: log };
           }
         } catch (err) {
-          if (this.expectedType === err.response.status.toString()) {
-            return { msg: `Status: ${err.response.status}`, log: null };
+          console.log('hi');
+          if (err.response) {
+            if (this.expectedType === err.response.status.toString()) {
+              return { msg: `Status: ${err.response.status}`, log: null };
+            }
           } else {
             const log = this.createAndSendLog(
               this.requestUrl,
