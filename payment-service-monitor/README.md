@@ -50,5 +50,5 @@ $ npm run start:prod
 - The service sits at localhost:3400
 - The endpoint /request-handler receives the "blueprint" of the request with the user-adjusted parameters from the frontend and executes the corresponding request to the database service. It will then return back a response message which is either paired with a created log message if the response does not conform the parameters or is sent individually otherwise. The log message is also sent to the issue creator component. 
 - The endpoint /messages offers monitoring services the freedom to scrape all the stored log messages.  
-- The endpoint /account-value is exposed for the chained request use case where the account service makes a request to query the account worth. Upon reception of the request by the account service, it will turn to database service and requests the account worth which will then be returned.
+
 

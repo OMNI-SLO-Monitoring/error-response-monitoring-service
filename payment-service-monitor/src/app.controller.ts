@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body } from '@nestjs/common';
+import { Controller, Get, Post, Body, UseInterceptors } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LogMessageFormat } from 'logging-format';
 import { RequestSenderService } from './request-sender/request-sender.service';
@@ -29,14 +29,5 @@ export class AppController {
   @Get('messages')
   async getAllMessages() {
     return this.appService.getAllMessages();
-  }
-
-  /**
-   * The request sent by the account service will go to this endpoint and
-   * will be transferred to the database service
-   */
-  @Get('account-value')
-  async requestAccountValue() {
-    return this.requestSender.fetchAccountValue();
   }
 }

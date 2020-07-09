@@ -19,35 +19,6 @@ export class RequestSenderService {
   ) {}
 
   /**
-   * Transfers the request for the account value to the database service and
-   * returns the value if request was successful. If request failed or a timeout has
-   * occurred, a log is created and sent to the issue creator
-   */
-  async fetchAccountValue() {
-    try {
-      const accVal = await this.httpService
-        .get('http://localhost:3000/account-worth')
-        .toPromise();
-      return accVal.data;
-    } catch (err) {
-      const log = {
-        type: LogType.ERROR,
-        time: Date.now(),
-        source: 'http://localhost:3000/account-worth',
-        detector: 'Price Service',
-        message: err.message,
-        data: {
-          expected: 'Account Value',
-          result: `${err.message}`,
-        },
-      };
-      this.logCreator.createLogMsg(log);
-      this.logCreator.sendLogMessage(log);
-      return err.message;
-    }
-  }
-
-  /**
    * Upon failure, this method creates a log and sends it to the issue creator component and
    * stores the log in an array in the backend
    * @param errorSource the source of error
