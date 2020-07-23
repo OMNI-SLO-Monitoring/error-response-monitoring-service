@@ -1,8 +1,11 @@
-import { Controller, Get, Post, Body, UseInterceptors } from '@nestjs/common';
+import { Controller, Get, Post, Body } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LogMessageFormat } from 'logging-format';
 import { RequestSenderService } from './request-sender/request-sender.service';
 
+/**
+ * Controller to show all messages received on a get request and to send received errors to the the issue creator on a post request
+ */
 @Controller()
 export class AppController {
   constructor(

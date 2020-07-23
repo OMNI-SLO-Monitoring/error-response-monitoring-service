@@ -2,6 +2,11 @@ import { Injectable, HttpService } from '@nestjs/common';
 import { AppService } from 'src/app.service';
 import { LogType, LogMessageFormat } from 'logging-format';
 
+/**
+ * This service is responsible for sending a get or post request to an url and dependent on whether
+ * the response equals the expected response it will either send an error log to an url or accept the request
+ * 
+ */
 @Injectable()
 export class RequestSenderService {
   //url endpoint for request

@@ -1,7 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { IssueLoggingService } from 'logging-module';
-import { LogType, LogMessageFormat } from 'logging-format';
+import { LogMessageFormat } from 'logging-format';
 
+/**
+ * This service is responsible for the creation and saving of error messages in an array and sending them to the issue creator
+ */
 @Injectable()
 export class AppService {
   messages: LogMessageFormat[] = [];
@@ -9,7 +12,6 @@ export class AppService {
   constructor(private logger: IssueLoggingService) {}
 
   /**
-   *
    * @param logMessage log message in the LogMessageFormat
    * creation of a log message and pushing that message into array 'messages'
    */
@@ -44,6 +46,7 @@ export class AppService {
 
   /**
    * returns all log messages created
+   * @returns the messages array containing all messages
    */
   getAllMessages() {
     return [...this.messages];

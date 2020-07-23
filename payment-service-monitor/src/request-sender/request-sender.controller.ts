@@ -1,6 +1,9 @@
 import { Controller, Body, Post } from '@nestjs/common';
 import { RequestSenderService } from './request-sender.service';
 
+/**
+ *request-sender controller to receive request params on port /request-sender 
+ */
 @Controller('request-sender')
 export class RequestSenderController {
   constructor(private requestSenderService: RequestSenderService) {}
