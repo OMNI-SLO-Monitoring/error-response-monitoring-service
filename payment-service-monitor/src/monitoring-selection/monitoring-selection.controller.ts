@@ -1,4 +1,4 @@
-import { Controller, Get, Delete, Post, Header, Body } from '@nestjs/common';
+import { Controller, Get, Delete, Post, Header, Body, Param } from '@nestjs/common';
 import { MonitoringSelectionService } from './monitoring-selection.service';
 import { MonitoringSelectionDTO } from './dto/monitoring-selection.dto';
 
@@ -11,9 +11,9 @@ export class MonitoringSelectionController {
         return this.monitoringSelectionService.getAllServices();
     }
 
-    @Delete()
-    deleteSelection() {
-        return this.monitoringSelectionService.deleteService();
+    @Delete('/:id')
+    deleteSelection(@Param('id') id: string) {
+        return this.monitoringSelectionService.deleteService(id);
     }
 
     @Post()

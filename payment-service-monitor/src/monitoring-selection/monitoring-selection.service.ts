@@ -14,8 +14,8 @@ export class MonitoringSelectionService {
             const addedSelection = new this.selectionModel(monitoringSelectionDTO);
             return addedSelection.save();
         }
-        deleteService() {
-
+        deleteService(id : string) {
+            return this.selectionModel.findByIdAndDelete(id);
         }
 
         getAllServices() {
