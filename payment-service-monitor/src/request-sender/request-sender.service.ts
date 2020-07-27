@@ -26,6 +26,7 @@ export class RequestSenderService {
   /**
    * Upon failure, this method creates a log and sends it to the issue creator component and
    * stores the log in an array in the backend
+   * 
    * @param errorSource the source of error
    * @param errorMessage the message of the error
    * @param expectedData the response type that is expected to be returned
@@ -58,6 +59,7 @@ export class RequestSenderService {
    * and evaluates whether the expected type and the received type of
    * the response match. If not, a log is created and sent to the issue creator.
    * An appropriate response with the log is additionally returned for the UI to display.
+   * 
    * @param requestParams post body with request parameters
    */
   async makeRequest(requestParams: any): Promise<any> {

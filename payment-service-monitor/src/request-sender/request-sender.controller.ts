@@ -11,6 +11,7 @@ export class RequestSenderController {
   /**
    * Receives the request parameters and passes them down to the
    * request sender service
+   * 
    * @param requestParams post body with request parameters
    */
   @Post()

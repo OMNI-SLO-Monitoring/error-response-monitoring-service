@@ -1,7 +1,6 @@
 import { Module, HttpModule } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { MongooseModule } from "@nestjs/mongoose";
-import { AppService } from './app.service';
 import { LoggingModule, IssueLoggingService } from 'logging-module';
 import { RequestSenderModule } from './request-sender/request-sender.module';
 import { SelectionSchema } from './monitoring-selection/schema/selection.schema';
