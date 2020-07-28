@@ -1,10 +1,10 @@
-import { Controller, Get, Post, Body, Param } from '@nestjs/common';
+import { Controller, Get, Post, Body, Request, Param, HostParam, Req, Headers, Ip } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LogMessageFormat } from 'logging-format';
 import { RequestSenderService } from './request-sender/request-sender.service';
 import { MonitoringSelectionService } from './monitoring-selection/monitoring-selection.service';
-import { url } from 'inspector';
-import { request } from 'http';
+import { request } from 'express';
+
 
 /**
  * Controller to show all messages received on a get request and to send received errors to the the issue creator on a post request
@@ -27,9 +27,8 @@ export class AppController {
    * Else the request is ignored
    */
   @Post()
-  async convertIntoLog(@Body() logMessage: LogMessageFormat) {
-    if ((await this.monitoringSelectionService.checkIfServiceIsSelected('1234')).length != 0) {
-      console.log('yes')
+  async convertIntoLog(@Body() logMessage: LogMessageFormat, @Ip() ip) {
+    if ((await this.monitoringSelectionService.checkIfServiceIsSelected(ip)).length != 0) {
       this.appService.createLogMsg(logMessage);
       this.appService.sendLogMessage(logMessage);
     }
