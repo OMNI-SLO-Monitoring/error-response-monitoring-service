@@ -17,17 +17,18 @@ export class AppService {
   }
 
   /**
-   * @param logMessage log message in the LogMessageFormat
    * creation of a log message and pushing that message into array 'messages'
+   * 
+   * @param logMessage log message in the LogMessageFormat
    */
   async createLogMsg(logMessage: LogMessageFormat) {
     this.messages.push(logMessage);
   }
 
   /**
+   * sending the log message to issue creator on localhost:3500 via IssueLoggingService
    *
    * @param logMessage log message in the LogMessageFormat
-   * sending the log message to issue creator on localhost:3500 via IssueLoggingService
    */
   sendLogMessage(log: LogMessageFormat) {
     this.logger.log(log);
@@ -36,7 +37,7 @@ export class AppService {
   /**
    * Creates a log message from an error and reports it to the issue-creator
    * 
-   * @param error that sould ne reported
+   * @param error that sould be reported
    */
   async reportLogFromError(error: ErrorFormat) {
     console.log("recieved error to report")
@@ -49,6 +50,7 @@ export class AppService {
 
   /**
    * returns all log messages created
+   * 
    * @returns the messages array containing all messages
    */
   getAllMessages() {
