@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body } from '@nestjs/common';
 import { AppService } from './app.service';
-import { LogMessageFormat } from 'logging-format';
+import { LogMessageFormat, ErrorFormat } from 'logging-format';
 import { RequestSenderService } from './request-sender/request-sender.service';
 
 /**
@@ -14,15 +14,14 @@ export class AppController {
   ) {}
 
   /**
-   *
-   * @param logMessage logMessage sent by price service
-   * converts an error message from a post request into the LogMessage
+   * recieves an error and 
    * and sends it to localhost:3500 to the issue creator.
+   *
+   * @param error sent by price service
    */
   @Post()
-  async convertIntoLog(@Body() logMessage: LogMessageFormat) {
-    this.appService.createLogMsg(logMessage);
-    this.appService.sendLogMessage(logMessage);
+  async convertIntoLog(@Body() error: ErrorFormat) {
+    return this.appService.reportLogFromError(error);
   }
 
   /**
