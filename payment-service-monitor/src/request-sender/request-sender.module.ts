@@ -1,4 +1,4 @@
-import { Module, HttpModule, HttpService } from '@nestjs/common';
+import { Module, HttpModule } from '@nestjs/common';
 import { RequestSenderService } from './request-sender.service';
 import { RequestSenderController } from './request-sender.controller';
 import { AppService } from 'src/app.service';
