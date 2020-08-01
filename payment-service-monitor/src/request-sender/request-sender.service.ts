@@ -109,14 +109,24 @@ export class RequestSenderService {
             return { msg: this.errorResponseMsg, log: log };
           }
         } catch (err) {
-          if (this.expectedResponse === err.response.status.toString()) {
-            return { msg: `Status: ${err.response.status}`, log: null };
+          if (err.response) {
+            if (this.expectedResponse === err.response.status.toString()) {
+              return { msg: `Status: ${err.response.status}`, log: null };
+            } else {
+              const log = this.createAndSendLog(
+                this.requestUrl,
+                this.errorResponseMsg,
+                this.expectedResponse,
+                `${err.response.status} Status Code`,
+              );
+              return { msg: this.errorResponseMsg, log: log };
+            }
           } else {
             const log = this.createAndSendLog(
               this.requestUrl,
               this.errorResponseMsg,
               this.expectedResponse,
-              `${err.response.status} Status Code`,
+              `${err.message}`,
             );
             return { msg: err.message, log: log };
           }
