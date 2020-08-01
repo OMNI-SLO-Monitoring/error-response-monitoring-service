@@ -61,6 +61,9 @@ export class RequestSenderService {
    * An appropriate response with the log is additionally returned for the UI to display.
    *
    * @param requestParams post body with request parameters
+   * @returns an object that contains a message field named msg and a log field named log.
+   * Depending on the outcome of the request, the log field is populated and the message is set
+   * accordingly
    */
   async makeRequest(requestParams: any): Promise<any> {
     this.requestUrl = requestParams.url;
