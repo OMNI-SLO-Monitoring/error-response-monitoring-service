@@ -109,10 +109,8 @@ export class RequestSenderService {
             return { msg: this.errorResponseMsg, log: log };
           }
         } catch (err) {
-          if (err.response) {
-            if (this.expectedResponse === err.response.status.toString()) {
-              return { msg: `Status: ${err.response.status}`, log: null };
-            }
+          if (this.expectedResponse === err.response.status.toString()) {
+            return { msg: `Status: ${err.response.status}`, log: null };
           } else {
             const log = this.createAndSendLog(
               this.requestUrl,
@@ -120,7 +118,7 @@ export class RequestSenderService {
               this.expectedResponse,
               `${err.response.status} Status Code`,
             );
-            return { msg: this.errorResponseMsg, log: log };
+            return { msg: err.message, log: log };
           }
         }
       }
