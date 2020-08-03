@@ -63,7 +63,10 @@ export class RequestSenderService {
    * @param requestParams post body with request parameters
    * @returns an object that contains a message field named msg and a log field named log.
    * Depending on the outcome of the request, the log field is populated and the message is set
-   * accordingly
+   * accordingly. The msg field is set to the fetched response data when it matches with the
+   * expected response data, it will be set to an error message otherwise. The log field
+   * is populated once the parameters are incorrect or the request can not be executed properly, it is
+   * null otherwise.
    */
   async makeRequest(requestParams: any): Promise<any> {
     this.requestUrl = requestParams.url;
