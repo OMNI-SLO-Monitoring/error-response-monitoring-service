@@ -7,18 +7,15 @@ import { LogMessageFormat, ErrorFormat } from 'logging-format';
  */
 @Injectable()
 export class AppService {
-
   messages: LogMessageFormat[] = [];
 
   reportedCorrelationIds: string[] = [];
 
-  constructor(private logger: IssueLoggingService) {
-
-  }
+  constructor(private logger: IssueLoggingService) {}
 
   /**
    * creation of a log message and pushing that message into array 'messages'
-   * 
+   *
    * @param logMessage log message in the LogMessageFormat
    */
   async createLogMsg(logMessage: LogMessageFormat) {
@@ -36,21 +33,21 @@ export class AppService {
 
   /**
    * Creates a log message from an error and reports it to the issue-creator
-   * 
-   * @param error that sould be reported
+   *
+   * @param error that should be reported
    */
   async reportLogFromError(error: ErrorFormat) {
-    console.log("recieved error to report")
-    if (!(this.reportedCorrelationIds.includes(error.correlationId))) {
+    console.log('received error to report');
+    if (!this.reportedCorrelationIds.includes(error.correlationId)) {
       this.reportedCorrelationIds.push(error.correlationId);
-      console.log("reporting error")
+      console.log('reporting error');
       this.logger.log(error.log);
     }
   }
 
   /**
    * returns all log messages created
-   * 
+   *
    * @returns the messages array containing all messages
    */
   getAllMessages() {

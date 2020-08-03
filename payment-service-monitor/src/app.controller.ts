@@ -14,7 +14,7 @@ export class AppController {
   ) {}
 
   /**
-   * recieves an error and 
+   * receives an error and
    * and sends it to localhost:3500 to the issue creator.
    *
    * @param error sent by price service
