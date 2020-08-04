@@ -1,20 +1,21 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RequestSenderController } from './request-sender.controller';
 import { RequestSenderService } from './request-sender.service';
-import { Request } from 'express';
+import { AppService } from '../app.service';
+import { IssueLoggingService } from 'logging-module';
+import { HttpModule } from '@nestjs/common';
 
 describe('RequestSender Controller', () => {
   let controller: RequestSenderController;
-  let service: RequestSenderService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       controllers: [RequestSenderController],
-      providers: [RequestSenderService],
+      providers: [RequestSenderService, AppService, IssueLoggingService],
+      imports: [HttpModule],
     }).compile();
 
     controller = module.get<RequestSenderController>(RequestSenderController);
-    service = module.get<RequestSenderService>(RequestSenderService);
   });
 
   it('should be defined', () => {

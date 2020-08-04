@@ -3,25 +3,28 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MonitoringSelectionService } from './monitoring-selection/monitoring-selection.service';
 import { IssueLoggingService } from 'logging-module';
+import { getModelToken } from '@nestjs/mongoose';
+import { HttpModule } from '@nestjs/common';
 
 describe('AppController', () => {
   let appController: AppController;
-  let appService: AppService;
-  let monitoringSelectionService: MonitoringSelectionService;
-  let loggingService: IssueLoggingService;
 
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService, MonitoringSelectionService, IssueLoggingService],
+      providers: [
+        AppService,
+        MonitoringSelectionService,
+        IssueLoggingService,
+        {
+          provide: getModelToken('selection'),
+          useValue: {},
+        },
+      ],
+      imports: [HttpModule],
     }).compile();
 
     appController = app.get<AppController>(AppController);
-    appService = app.get<AppService>(AppService);
-    monitoringSelectionService = app.get<MonitoringSelectionService>(
-      MonitoringSelectionService,
-    );
-    loggingService = app.get<IssueLoggingService>(IssueLoggingService);
   });
 
   it('should be defined', () => {
