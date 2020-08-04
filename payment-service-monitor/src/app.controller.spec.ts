@@ -1,14 +1,14 @@
 import { HttpModule } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { LogMessageFormat } from 'logging-format';
+import { LogMessageFormat, LogType } from 'logging-format';
 import { IssueLoggingService } from 'logging-module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { RequestSenderService } from './request-sender/request-sender.service';
 
 describe('AppController', () => {
-  jest.mock('./app.service')
-  jest.mock('./request-sender/request-sender.service')
+  jest.mock('./app.service');
+  jest.mock('./request-sender/request-sender.service');
 
   let appController: AppController;
   let appService: AppService;
@@ -16,7 +16,7 @@ describe('AppController', () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
       providers: [AppService, RequestSenderService, IssueLoggingService],
-      imports: [HttpModule]
+      imports: [HttpModule],
     }).compile();
 
     appController = app.get<AppController>(AppController);
@@ -27,11 +27,28 @@ describe('AppController', () => {
     expect(appController).toBeDefined();
   });
 
-  it('should give Message Array', async () => {
-    const expectedResult: LogMessageFormat[] = [];
-    expect(await appService.getAllMessages()).toMatchObject(expectedResult);
+  /**
+   * Test function that probes whether the log message array
+   * is fetched properly
+   */
+  it('should give return a message array', async () => {
+    const expectedResult: LogMessageFormat[] = [
+      {
+        type: LogType.CB_OPEN,
+        time: Date.now(),
+        source: 'Database Service',
+        detector: 'Price Service',
+        data: {
+          openTime: 31,
+          failedResponses: 3,
+        },
+      },
+    ];
+    jest
+      .spyOn(appService, 'getAllMessages')
+      .mockImplementationOnce(() => expectedResult);
+    expect(await appController.getAllMessages()).toMatchObject(expectedResult);
   });
-
 
   afterEach(() => {
     jest.resetAllMocks();
