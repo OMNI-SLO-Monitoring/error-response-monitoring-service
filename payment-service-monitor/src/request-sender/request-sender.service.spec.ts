@@ -21,6 +21,10 @@ describe('RequestSenderService', () => {
     expect(service).toBeDefined();
   });
 
+  /**
+   * Test function that probes if a valid log is created
+   * when using createAndSendLog operation
+   */
   it('should create valid log', () => {
     const expectedLog: LogMessageFormat = {
       type: LogType.ERROR,
