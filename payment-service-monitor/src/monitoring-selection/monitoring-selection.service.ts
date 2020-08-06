@@ -23,7 +23,7 @@ export class MonitoringSelectionService {
   }
 
   /**
-   * Deletes a monitored service by id in the database
+   * Deletes a registered monitored service by id in the database
    *
    * @param id Id of monitored service
    */
