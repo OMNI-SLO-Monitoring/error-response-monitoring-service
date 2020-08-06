@@ -98,12 +98,4 @@ describe('MonitoringSelectionService', () => {
   it('should add and return the correct monitor data', async () => {
     expect(await service.addSelectionToDatabase(mockDBEntry)).toBe(mockDBEntry);
   });
-
-  /*
-  it('should return the service with the given service url', async () => {
-    await service.addSelectionToDatabase(mockDBEntry);
-    service.checkIfServiceIsSelected({
-      serviceUrl: mockDBEntry.serviceUrl,
-    });
-  });*/
 });
