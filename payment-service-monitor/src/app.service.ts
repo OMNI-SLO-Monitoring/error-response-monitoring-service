@@ -13,7 +13,7 @@ export class AppService {
 
   /**
    * @param logMessage log message in the LogMessageFormat
-   * 
+   *
    * creation of a log message and pushing that message into array 'messages'
    */
 
@@ -31,7 +31,7 @@ export class AppService {
   /**
    *
    * @param logMessage log message in the LogMessageFormat
-   * 
+   *
    * sending the log message to issue creator on localhost:3500 via IssueLoggingService
    */
 
@@ -48,7 +48,7 @@ export class AppService {
 
   /**
    * returns all log messages created
-   * 
+   *
    * @returns the messages array containing all messages
    */
   getAllMessages() {

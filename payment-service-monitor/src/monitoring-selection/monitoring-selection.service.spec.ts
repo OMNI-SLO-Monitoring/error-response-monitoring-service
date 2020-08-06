@@ -8,11 +8,6 @@ import { identity } from 'rxjs';
 
 describe('MonitoringSelectionService', () => {
   let service: MonitoringSelectionService;
-  //Acts as a mock entry in the database
-  const mockDBEntry = {
-    name: 'Price Service',
-    serviceUrl: 'http://localhost:3300',
-  };
 
   beforeEach(async () => {
     //This mocks the database and its functions
@@ -42,42 +37,12 @@ describe('MonitoringSelectionService', () => {
       };
     }
 
-    class mockDB {
-      serviceList: any[] = [];
-      constructor(dto: any) {
-        this.serviceList.push(dto);
-      }
-      save() {
-        return this.serviceList[this.serviceList.length - 1];
-      }
-
-      findByIdAndDelete(id) {
-        var index: number = +id;
-        if (this.serviceList[index]) {
-          var temp = this.serviceList[index];
-          this.serviceList[index] = null;
-          return temp;
-        } else {
-          return 'Not in Database';
-        }
-      }
-
-      find = ({ serviceUrl: requestUrl }) => {
-        this.serviceList.forEach(element => {
-          if (element.serviceUrl === requestUrl) {
-            return element;
-          }
-        });
-        return 'Not in Database';
-      };
-    }
-
     const module: TestingModule = await Test.createTestingModule({
       providers: [
         MonitoringSelectionService,
         {
           provide: getModelToken('selection'),
-          useValue: mockDB,
+          useValue: dbMock,
         },
       ],
     }).compile();
@@ -96,6 +61,10 @@ describe('MonitoringSelectionService', () => {
    * the database.
    */
   it('should add and return the correct monitor data', async () => {
+    const mockDBEntry = {
+      name: 'Price Service',
+      serviceUrl: 'http://localhost:3300',
+    };
     expect(await service.addSelectionToDatabase(mockDBEntry)).toBe(mockDBEntry);
   });
 });
