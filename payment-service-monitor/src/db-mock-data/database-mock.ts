@@ -1,4 +1,6 @@
-//This mocks the database and its functions
+/**This mocks the database and its functions especially
+ *the function logic
+ */
 export function dbMock(dto: any) {
   var serviceList = [
     {
@@ -8,9 +10,6 @@ export function dbMock(dto: any) {
     },
   ];
   serviceList.push(dto);
-  this.save = () => {
-    return dto;
-  };
 
   /**
    * This mock findByIdAndDelete method iterates through all
@@ -33,18 +32,30 @@ export function dbMock(dto: any) {
   /**
    * This mock find method iterates through all
    * services in the database and finds the services with the
-   * matching service urls and returns them in an array.
+   * matching service urls and returns them in an array when the
+   * object values are not null. If an empty object has been passed,
+   * all services are returned through the execObj which has the function
+   * exec that returned the service list.
    */
   this.find = ({ serviceUrl: requestUrl }) => {
-    let serviceArray = [];
-    for (var i = 0; i < serviceList.length; i++) {
-      if (
-        serviceList[i] &&
-        serviceList[i].serviceUrl === requestUrl.serviceUrl
-      ) {
-        serviceArray.push(serviceList[i]);
+    if (requestUrl) {
+      let serviceArray = [];
+      for (var i = 0; i < serviceList.length; i++) {
+        if (
+          serviceList[i] &&
+          serviceList[i].serviceUrl === requestUrl.serviceUrl
+        ) {
+          serviceArray.push(serviceList[i]);
+        }
       }
+      return serviceArray;
+    } else {
+      return execObj;
     }
-    return serviceArray;
+  };
+  let execObj = {
+    exec: () => {
+      return serviceList;
+    },
   };
 }

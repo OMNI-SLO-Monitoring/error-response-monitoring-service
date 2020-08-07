@@ -34,7 +34,7 @@ export class MonitoringSelectionService {
    * Returns all monitored services in the database
    */
   getAllServices() {
-    return this.selectionModel.find().exec();
+    return this.selectionModel.find({}).exec();
   }
 
   /**

@@ -1,7 +1,7 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MonitoringSelectionService } from './monitoring-selection.service';
 import { getModelToken } from '@nestjs/mongoose';
-import { dbMock } from './database-mock';
+import { dbMock } from '../db-mock-data/database-mock';
 
 describe('MonitoringSelectionService', () => {
   let service: MonitoringSelectionService;
@@ -85,5 +85,16 @@ describe('MonitoringSelectionService', () => {
    */
   it('should not be able to delete registered service from the database', async () => {
     expect(await service.deleteService('2')).toBe('Not in Database');
+  });
+
+  /**
+   * This test functions probes the getAllServices operation that fetches all services
+   * in the mock database. Afterwards the fetched services are scrutinized.
+   */
+  it('should get all registered services from database', async () => {
+    const fetchedServices = await service.getAllServices();
+    expect(fetchedServices.length).toBe(2);
+    expect(fetchedServices[0].name).toBe('Account Service');
+    expect(fetchedServices[1].name).toBe('Price Service');
   });
 });
