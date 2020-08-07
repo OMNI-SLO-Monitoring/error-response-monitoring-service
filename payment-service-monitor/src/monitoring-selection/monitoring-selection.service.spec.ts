@@ -34,14 +34,6 @@ describe('MonitoringSelectionService', () => {
   });
 
   /**
-   * This test functions probes the operation that adds a given service to
-   * the database.
-   */
-  it('should add and return the correct service data', async () => {
-    //expect(await service.addSelectionToDatabase(mockDBEntry)).toBe(mockDBEntry);
-  });
-
-  /**
    * This test function probes whether or not a service with the given url
    * is in the mock database. In this case, the corresponding mock service entries
    * should be found and returned.
@@ -83,13 +75,13 @@ describe('MonitoringSelectionService', () => {
    * is in the mock database. In this case, the corresponding mock service entry
    * does not exist in the database and hence a mock error message is returned.
    */
-  it('should not be able to delete registered service from the database', async () => {
+  it('should not be able to find and delete service in database', async () => {
     expect(await service.deleteService('2')).toBe('Not in Database');
   });
 
   /**
    * This test functions probes the getAllServices operation that fetches all services
-   * in the mock database. Afterwards the fetched services are scrutinized.
+   * in the mock database. Afterwards the fetched services are scrutinized successfully.
    */
   it('should get all registered services from database', async () => {
     const fetchedServices = await service.getAllServices();

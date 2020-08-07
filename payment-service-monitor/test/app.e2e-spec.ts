@@ -2,7 +2,7 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
-import { dbMock } from './../src/monitoring-selection/database-mock';
+import { dbMock } from '../src/db-mock-data/database-mock';
 import { AppController } from './../src/app.controller';
 import { AppService } from './../src/app.service';
 import { getModelToken } from '@nestjs/mongoose';
