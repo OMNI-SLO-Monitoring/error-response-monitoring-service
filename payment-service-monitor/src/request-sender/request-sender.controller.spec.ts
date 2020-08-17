@@ -2,8 +2,8 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { RequestSenderController } from './request-sender.controller';
 import { RequestSenderService } from './request-sender.service';
 import { AppService } from '../app.service';
-import { HttpModule } from '@nestjs/common';
 import { IssueLoggingService } from 'logging-module';
+import { HttpModule } from '@nestjs/common';
 
 describe('RequestSender Controller', () => {
   let controller: RequestSenderController;
@@ -12,7 +12,9 @@ describe('RequestSender Controller', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [RequestSenderService, AppService, IssueLoggingService],
       controllers: [RequestSenderController],
-      imports: [HttpModule]  
+      providers: [RequestSenderService, AppService, IssueLoggingService],
+      imports: [HttpModule],
+
     }).compile();
 
     controller = module.get<RequestSenderController>(RequestSenderController);

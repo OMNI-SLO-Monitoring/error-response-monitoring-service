@@ -3,6 +3,7 @@ import { RequestSenderService } from './request-sender.service';
 import { AppService } from '../app.service';
 import { LogType, LogMessageFormat } from 'logging-format';
 import { HttpService, HttpModule } from '@nestjs/common';
+
 import { IssueLoggingService } from 'logging-module';
 
 describe('RequestSenderService', () => {

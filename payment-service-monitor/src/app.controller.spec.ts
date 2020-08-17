@@ -4,7 +4,10 @@ import { LogMessageFormat, LogType } from 'logging-format';
 import { IssueLoggingService } from 'logging-module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { RequestSenderService } from './request-sender/request-sender.service';
+import { MonitoringSelectionService } from './monitoring-selection/monitoring-selection.service';
+import { IssueLoggingService } from 'logging-module';
+import { getModelToken } from '@nestjs/mongoose';
+import { HttpModule } from '@nestjs/common';
 
 describe('AppController', () => {
   jest.mock('./app.service');
@@ -15,7 +18,16 @@ describe('AppController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [AppService, RequestSenderService, IssueLoggingService],
+      providers: [
+        AppService,
+        MonitoringSelectionService,
+        IssueLoggingService,
+        {
+          provide: getModelToken('selection'),
+          useValue: {},
+        },
+      ],
+
       imports: [HttpModule],
     }).compile();
 
@@ -52,5 +64,6 @@ describe('AppController', () => {
 
   afterEach(() => {
     jest.resetAllMocks();
+
   });
 });
