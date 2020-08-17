@@ -1,7 +1,9 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { RequestSenderService } from './request-sender.service';
-import { HttpService, HttpModule } from '@nestjs/common/http';
 import { AppService } from '../app.service';
+import { LogType, LogMessageFormat } from 'logging-format';
+import { HttpService, HttpModule } from '@nestjs/common';
+
 import { IssueLoggingService } from 'logging-module';
 
 describe('RequestSenderService', () => {
@@ -18,5 +20,31 @@ describe('RequestSenderService', () => {
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  /**
+   * Test function that probes if a valid log is created
+   * when using createAndSendLog operation
+   */
+  it('should create valid log', () => {
+    const expectedLog: LogMessageFormat = {
+      type: LogType.ERROR,
+      time: Date.now(),
+      source: 'Database Service',
+      detector: 'Error Response Monitor',
+      message: 'Incorrect Parameters',
+      data: {
+        expected: 30,
+        result: 31,
+      },
+    };
+    expect(
+      service.createAndSendLog(
+        'Database Service',
+        'Incorrect Parameters',
+        30,
+        31,
+      ),
+    ).toStrictEqual(expectedLog);
   });
 });

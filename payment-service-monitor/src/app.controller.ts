@@ -3,6 +3,7 @@ import { AppService } from './app.service';
 import { LogMessageFormat } from 'logging-format';
 import { MonitoringSelectionService } from './monitoring-selection/monitoring-selection.service';
 
+
 /**
  * Controller to show all messages received on a get request and to send received errors to the the issue creator on a post request
  */
@@ -14,6 +15,7 @@ export class AppController {
   ) {}
 
   /**
+
    *
    * @param logMessage logMessage sent by price service
    *
@@ -31,6 +33,7 @@ export class AppController {
       this.appService.createLogMsg(logMessage);
       this.appService.sendLogMessage(logMessage);
     }
+
   }
 
   /**

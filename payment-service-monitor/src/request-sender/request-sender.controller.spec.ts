@@ -10,9 +10,11 @@ describe('RequestSender Controller', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      providers: [RequestSenderService, AppService, IssueLoggingService],
       controllers: [RequestSenderController],
       providers: [RequestSenderService, AppService, IssueLoggingService],
       imports: [HttpModule],
+
     }).compile();
 
     controller = module.get<RequestSenderController>(RequestSenderController);
