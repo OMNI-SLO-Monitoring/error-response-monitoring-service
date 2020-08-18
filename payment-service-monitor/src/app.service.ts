@@ -1,6 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { IssueLoggingService } from 'logging-module';
 import { LogMessageFormat } from 'logging-format';
+const {Kafka} = require('kafkajs');
+
+const kafka = new Kafka({
+  clientId: 'error-monitor',
+  brokers: ['localhost:9092']
+});
+const producer = kafka.producer();
 
 /**
  * This service is responsible for the creation and saving of error messages in an array and sending them to the issue creator
@@ -30,18 +37,18 @@ export class AppService {
   /**
    *
    * @param logMessage log message in the LogMessageFormat
-   * sending the log message to issue creator on localhost:3500 via IssueLoggingService
+   * 
+   * sending the log message to kafka topic
    */
 
-  sendLogMessage(logMessage: LogMessageFormat) {
-    this.logger.log({
-      type: logMessage.type,
-      time: logMessage.time,
-      source: logMessage.source,
-      detector: logMessage.detector,
-      message: logMessage.message,
-      data: logMessage.data,
+  async sendLogMessage(logMessage: LogMessageFormat) {
+    await producer.connect();
+    await producer.send({
+      topic: 'logs',
+      messages: [{
+value: JSON.stringify(logMessage)}]
     });
+    await producer.disconnect();
   }
 
   /**
