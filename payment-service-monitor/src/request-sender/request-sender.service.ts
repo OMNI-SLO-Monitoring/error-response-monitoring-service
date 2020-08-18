@@ -1,20 +1,20 @@
 import { Injectable, HttpService } from '@nestjs/common';
-import { AppService } from 'src/app.service';
+import { AppService } from '../app.service';
 import { LogType, LogMessageFormat } from 'logging-format';
 
 /**
  * This service is responsible for sending a get or post request to an url and dependent on whether
  * the response equals the expected response it will either send an error log to an url or accept the request
- * 
+ *
  */
 @Injectable()
 export class RequestSenderService {
   //url endpoint for request
   private requestUrl: string;
-  //data type of data that is being returned upon request
-  private receivedType: any;
-  //expected response type of returned data
-  private expectedType: any;
+  //response data that is being returned upon request
+  private receivedResponse: any;
+  //expected response data of returned data
+  private expectedResponse: any;
   //error message for false response type
   private errorResponseMsg = 'Incorrect Parameters';
 
@@ -26,16 +26,17 @@ export class RequestSenderService {
   /**
    * Upon failure, this method creates a log and sends it to the issue creator component and
    * stores the log in an array in the backend
+   *
    * @param errorSource the source of error
    * @param errorMessage the message of the error
-   * @param expectedData the response type that is expected to be returned
-   * @param receivedData the response type that is actually returned
+   * @param expectedResponse the data that is expected to be returned
+   * @param receivedResponse the data that is actually returned
    */
   createAndSendLog(
     errorSource: string,
     errorMessage: string,
-    expectedData,
-    receivedData,
+    expectedResponse,
+    receivedResponse,
   ): LogMessageFormat {
     const log: LogMessageFormat = {
       type: LogType.ERROR,
@@ -44,8 +45,8 @@ export class RequestSenderService {
       detector: 'Error Response Monitor',
       message: errorMessage,
       data: {
-        expected: expectedData,
-        result: receivedData,
+        expected: expectedResponse,
+        result: receivedResponse,
       },
     };
     this.logCreator.createLogMsg(log);
@@ -55,27 +56,34 @@ export class RequestSenderService {
 
   /**
    * Makes a request based on the request parameters inside post body
-   * and evaluates whether the expected type and the received type of
+   * and evaluates whether the expected response and the received response of
    * the response match. If not, a log is created and sent to the issue creator.
    * An appropriate response with the log is additionally returned for the UI to display.
+   *
    * @param requestParams post body with request parameters
+   * @returns an object that contains a message field named msg and a log field named log.
+   * Depending on the outcome of the request, the log field is populated and the message is set
+   * accordingly. The msg field is set to the fetched response data when it matches with the
+   * expected response data, it will be set to an error message otherwise. The log field
+   * is populated once the parameters are incorrect or the request can not be executed properly, it is
+   * null otherwise.
    */
   async makeRequest(requestParams: any): Promise<any> {
     this.requestUrl = requestParams.url;
-    this.expectedType = requestParams.responseType;
+    this.expectedResponse = requestParams.expResponse;
     switch (requestParams.httpMethod) {
       case 'get': {
         try {
           const res = await this.httpService.get(this.requestUrl).toPromise();
-          this.receivedType = typeof res.data;
-          if (this.receivedType === this.expectedType) {
+          this.receivedResponse = res.data;
+          if (this.receivedResponse.toString() === this.expectedResponse) {
             return { msg: res.data, log: null };
           } else {
             const log = this.createAndSendLog(
               this.requestUrl,
               this.errorResponseMsg,
-              this.expectedType,
-              this.receivedType,
+              this.expectedResponse,
+              this.receivedResponse,
             );
             return { msg: this.errorResponseMsg, log: log };
           }
@@ -83,7 +91,7 @@ export class RequestSenderService {
           const log = this.createAndSendLog(
             this.requestUrl,
             err.message,
-            this.expectedType,
+            this.expectedResponse,
             err.message,
           );
           return { msg: err.message, log: log };
@@ -94,32 +102,39 @@ export class RequestSenderService {
           const res = await this.httpService
             .post(this.requestUrl, { body: `${requestParams.postBody}` })
             .toPromise();
-          this.receivedType = res.status;
-          if (this.receivedType.toString() === this.expectedType) {
+          this.receivedResponse = res.status;
+          if (this.receivedResponse.toString() === this.expectedResponse) {
             return { msg: `Status: ${res.status} | ${res.data}`, log: null };
           } else {
             const log = this.createAndSendLog(
               this.requestUrl,
               this.errorResponseMsg,
-              this.expectedType,
-              `${this.receivedType} Status Code`,
+              this.expectedResponse,
+              `${this.receivedResponse} Status Code`,
             );
             return { msg: this.errorResponseMsg, log: log };
           }
         } catch (err) {
-          console.log('hi');
           if (err.response) {
-            if (this.expectedType === err.response.status.toString()) {
+            if (this.expectedResponse === err.response.status.toString()) {
               return { msg: `Status: ${err.response.status}`, log: null };
+            } else {
+              const log = this.createAndSendLog(
+                this.requestUrl,
+                this.errorResponseMsg,
+                this.expectedResponse,
+                `${err.response.status} Status Code`,
+              );
+              return { msg: this.errorResponseMsg, log: log };
             }
           } else {
             const log = this.createAndSendLog(
               this.requestUrl,
               this.errorResponseMsg,
-              this.expectedType,
-              `${err.response.status} Status Code`,
+              this.expectedResponse,
+              `${err.message}`,
             );
-            return { msg: this.errorResponseMsg, log: log };
+            return { msg: err.message, log: log };
           }
         }
       }

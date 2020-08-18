@@ -1,24 +1,111 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, HttpModule, HttpService } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
+import { dbMock } from '../src/db-mock-data/database-mock';
+import { AppController } from './../src/app.controller';
+import { AppService } from './../src/app.service';
+import { getModelToken } from '@nestjs/mongoose';
+
+import { LogMessageFormat, LogType } from 'logging-format';
+
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
+  //mock log
+  const mockMessages: LogMessageFormat[] = [
+    {
+      type: LogType.ERROR,
+      time: Date.now(),
+      source: 'Database service',
+      detector: 'Error Response Monitor',
+      message: 'An error occurred',
+      data: {
+        expected: 'John',
+        result: 'Jeff',
+      },
+    },
+  ];
+  //mock app service
+  let appService = {
+    getAllMessages: () => mockMessages,
+  };
 
   beforeEach(async () => {
+    let mockAppService = {
+      getAllMessages: () => {
+        return [];
+      },
+    };
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
-    }).compile();
+      controllers: [AppController],
+      providers: [
+        AppService,
+        {
+          provide: getModelToken('selection'),
+          useValue: dbMock,
+        },
+      ],
+    })
+      .overrideProvider(AppService)
+      .useValue(mockAppService)
+
+      .compile();
 
     app = moduleFixture.createNestApplication();
     await app.init();
   });
 
-  it('/ (GET)', () => {
-    return request(app.getHttpServer())
-      .get('/')
+  /**
+   * Test function for a get request to fetch all the log messages with
+   * mock log
+   */
+  it('/messages (GET)', async () => {
+    return await request(app.getHttpServer())
+      .get('/messages')
       .expect(200)
-      .expect('Hello World!');
+      .expect(mockMessages);
+  });
+});
+
+describe('Request Sender (e2e)', () => {
+  let app: INestApplication;
+  let httpService: HttpService;
+
+  beforeEach(async () => {
+    const moduleFixture: TestingModule = await Test.createTestingModule({
+      imports: [AppModule, HttpModule],
+    }).compile();
+
+    app = moduleFixture.createNestApplication();
+    httpService = moduleFixture.get<HttpService>(HttpService);
+    await app.init();
+  });
+
+  /**
+   * Test function for the case when expected response does equals
+   * received response
+   */
+  it('/request-sender (POST) expected equals received response', async () => {
+    const result = {
+      data: 31,
+      status: 200,
+      statusText: 'OK',
+      headers: {},
+      config: {},
+    };
+    let mockReqParams = {
+      url: 'http://localhost:3000/request-handler/balance',
+      httpMethod: 'get',
+      expResponse: '31',
+      postBody: undefined,
+    };
+    jest.spyOn(httpService, 'get').mockImplementationOnce(() => of(result));
+    return await request(app.getHttpServer())
+      .post('/request-sender')
+      .send(mockReqParams)
+      .expect(201)
+      .expect(`{"msg":31,"log":null}`);
   });
 });

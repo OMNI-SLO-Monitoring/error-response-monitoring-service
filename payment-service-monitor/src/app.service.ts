@@ -9,6 +9,7 @@ const kafka = new Kafka({
 });
 const producer = kafka.producer();
 
+
 /**
  * This service is responsible for the creation and saving of error messages in an array and sending them to the issue creator
  */
@@ -16,30 +17,18 @@ const producer = kafka.producer();
 export class AppService {
   messages: LogMessageFormat[] = [];
 
+  reportedCorrelationIds: string[] = [];
+
   constructor(private logger: IssueLoggingService) {}
 
   /**
-   * @param logMessage log message in the LogMessageFormat
    * creation of a log message and pushing that message into array 'messages'
-   */
-
-  async createLogMsg(logMessage: LogMessageFormat) {
-    let logMsg: LogMessageFormat = {
-      type: logMessage.type,
-      time: logMessage.time,
-      source: logMessage.source,
-      detector: logMessage.detector,
-      message: logMessage.message,
-      data: logMessage.data,
-    };
-    this.messages.push(logMsg);
-  }
-  /**
    *
    * @param logMessage log message in the LogMessageFormat
-   * 
-   * sending the log message to kafka topic
    */
+  async createLogMsg(logMessage: LogMessageFormat) {
+    this.messages.push(logMessage);
+  }
 
   async sendLogMessage(logMessage: LogMessageFormat) {
     await producer.connect();
@@ -49,13 +38,28 @@ export class AppService {
 value: JSON.stringify(logMessage)}]
     });
     await producer.disconnect();
+
+  /**
+   * Creates a log message from an error and reports it to the issue-creator
+   *
+   * @param error that should be reported
+   */
+  async reportLogFromError(error: ErrorFormat) {
+    console.log('received error to report');
+    if (!this.reportedCorrelationIds.includes(error.correlationId)) {
+      this.reportedCorrelationIds.push(error.correlationId);
+      console.log('reporting error');
+      this.logger.log(error.log);
+    }
+
   }
 
   /**
    * returns all log messages created
+   *
    * @returns the messages array containing all messages
    */
   getAllMessages() {
-    return [...this.messages];
+    return this.messages;
   }
 }
