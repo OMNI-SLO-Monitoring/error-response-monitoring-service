@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { IssueLoggingService } from 'logging-module';
-import { LogMessageFormat } from 'logging-format';
+import { LogMessageFormat, ErrorFormat } from 'logging-format';
 const {Kafka} = require('kafkajs');
 
 const kafka = new Kafka({
@@ -38,7 +38,7 @@ export class AppService {
 value: JSON.stringify(logMessage)}]
     });
     await producer.disconnect();
-
+  }
   /**
    * Creates a log message from an error and reports it to the issue-creator
    *
@@ -49,7 +49,7 @@ value: JSON.stringify(logMessage)}]
     if (!this.reportedCorrelationIds.includes(error.correlationId)) {
       this.reportedCorrelationIds.push(error.correlationId);
       console.log('reporting error');
-      this.logger.log(error.log);
+      this.sendLogMessage(error.log);
     }
 
   }
