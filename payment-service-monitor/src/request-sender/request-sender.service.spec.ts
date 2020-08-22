@@ -18,15 +18,11 @@ describe('RequestSenderService', () => {
     service = module.get<RequestSenderService>(RequestSenderService);
   });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
-
   /**
    * Test function that probes if a valid log is created
    * when using createAndSendLog operation
    */
-  it('should create valid log', () => {
+  it('should create valid log',async () => {
     const expectedLog: LogMessageFormat = {
       type: LogType.ERROR,
       time: Date.now(),
@@ -39,7 +35,7 @@ describe('RequestSenderService', () => {
       },
     };
     expect(
-      service.createAndSendLog(
+      await service.createAndSendLog(
         'Database Service',
         'Incorrect Parameters',
         30,
