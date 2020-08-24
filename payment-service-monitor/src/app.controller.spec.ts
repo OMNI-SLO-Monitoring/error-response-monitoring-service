@@ -1,12 +1,11 @@
-import { HttpModule } from '@nestjs/common';
+
 import { Test, TestingModule } from '@nestjs/testing';
 import { LogMessageFormat, LogType } from 'logging-format';
-import { IssueLoggingService } from 'logging-module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { MonitoringSelectionService } from './monitoring-selection/monitoring-selection.service';
-import { IssueLoggingService } from 'logging-module';
 import { getModelToken } from '@nestjs/mongoose';
+import { IssueLoggingService } from 'logging-module';
 import { HttpModule } from '@nestjs/common';
 
 describe('AppController', () => {

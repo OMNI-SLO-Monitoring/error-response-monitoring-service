@@ -5,14 +5,18 @@ import { LogType, LogMessageFormat } from 'logging-format';
 import { HttpService, HttpModule } from '@nestjs/common';
 
 import { IssueLoggingService } from 'logging-module';
+import { MonitoringSelectionModule } from 'src/monitoring-selection/monitoring-selection.module';
+import { RequestSenderController } from './request-sender.controller';
 
 describe('RequestSenderService', () => {
   let service: RequestSenderService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [HttpModule, MonitoringSelectionModule],
       providers: [RequestSenderService, AppService, IssueLoggingService],
-      imports: [HttpModule],
+      controllers: [RequestSenderController],
+      exports: [RequestSenderService, AppService, IssueLoggingService],
     }).compile();
 
     service = module.get<RequestSenderService>(RequestSenderService);
