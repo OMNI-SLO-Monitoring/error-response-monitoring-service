@@ -38,7 +38,7 @@ export class AppService {
   /**
    * Creates a log message from an error and reports it to the issue-creator
    * 
-   * @param error that sould be reported
+   * @param error that should be reported
    */
   async reportLogFromError(error: ErrorFormat) {
     console.log('received error to report');
