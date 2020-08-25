@@ -12,7 +12,6 @@ describe('RequestSender Controller', () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [RequestSenderService, AppService, IssueLoggingService],
       controllers: [RequestSenderController],
-      providers: [RequestSenderService, AppService, IssueLoggingService],
       imports: [HttpModule],
 
     }).compile();

@@ -32,12 +32,12 @@ export class RequestSenderService {
    * @param expectedResponse the data that is expected to be returned
    * @param receivedResponse the data that is actually returned
    */
-  createAndSendLog(
+  async createAndSendLog(
     errorSource: string,
     errorMessage: string,
     expectedResponse,
     receivedResponse,
-  ): LogMessageFormat {
+  ): Promise<LogMessageFormat> {
     const log: LogMessageFormat = {
       type: LogType.ERROR,
       time: Date.now(),
@@ -49,8 +49,8 @@ export class RequestSenderService {
         result: receivedResponse,
       },
     };
-    this.logCreator.createLogMsg(log);
-    this.logCreator.sendLogMessage(log);
+    await this.logCreator.createLogMsg(log);
+    await this.logCreator.sendLogMessage(log);
     return log;
   }
 
