@@ -8,6 +8,7 @@ import { AppService } from './../src/app.service';
 import { getModelToken } from '@nestjs/mongoose';
 
 import { LogMessageFormat, LogType } from 'logging-format';
+import { of } from 'rxjs';
 
 
 describe('AppController (e2e)', () => {
