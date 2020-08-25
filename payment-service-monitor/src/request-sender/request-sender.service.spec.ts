@@ -6,6 +6,7 @@ import { HttpService, HttpModule } from '@nestjs/common';
 
 import { IssueLoggingService } from 'logging-module';
 
+jest.mock('kafkajs')
 describe('RequestSenderService', () => {
   let service: RequestSenderService;
 
