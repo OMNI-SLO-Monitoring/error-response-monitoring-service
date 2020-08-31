@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Ip } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LogMessageFormat, ErrorFormat } from 'logging-format';
-import { MonitoringSelectionService } from './monitoring-selection/monitoring-selection.service';
 
 
 /**
@@ -11,7 +10,6 @@ import { MonitoringSelectionService } from './monitoring-selection/monitoring-se
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private monitoringSelectionService: MonitoringSelectionService,
   ) {}
 
   /**
@@ -26,12 +24,7 @@ export class AppController {
    */
   @Post()
   async convertIntoLog(@Body() error: ErrorFormat, @Ip() ip) {
-    if (
-      (await this.monitoringSelectionService.checkIfServiceIsSelected(ip))
-        .length != 0
-    ) {
-      this.appService.reportLogFromError(error)
-    }
+    this.appService.reportLogFromError(error)
   }
 
   /**

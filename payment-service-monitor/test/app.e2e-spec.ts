@@ -2,12 +2,12 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, HttpModule, HttpService } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
-import { dbMock } from '../src/db-mock-data/database-mock';
 import { AppController } from './../src/app.controller';
 import { AppService } from './../src/app.service';
 import { getModelToken } from '@nestjs/mongoose';
 
 import { LogMessageFormat, LogType } from 'logging-format';
+import { of } from 'rxjs';
 
 
 describe('AppController (e2e)', () => {
@@ -42,10 +42,10 @@ describe('AppController (e2e)', () => {
       controllers: [AppController],
       providers: [
         AppService,
-        {
-          provide: getModelToken('selection'),
-          useValue: dbMock,
-        },
+        // {
+        //   provide: getModelToken('selection'),
+        //   useValue: dbMock,
+        // },
       ],
     })
       .overrideProvider(AppService)
