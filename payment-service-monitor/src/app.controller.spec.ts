@@ -4,8 +4,6 @@ import { LogMessageFormat, LogType } from 'logging-format';
 import { IssueLoggingService } from 'logging-module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MonitoringSelectionService } from './monitoring-selection/monitoring-selection.service';
-import { getModelToken } from '@nestjs/mongoose';
 
 describe('AppController', () => {
   jest.mock('./app.service');
@@ -18,12 +16,7 @@ describe('AppController', () => {
       controllers: [AppController],
       providers: [
         AppService,
-        MonitoringSelectionService,
         IssueLoggingService,
-        {
-          provide: getModelToken('selection'),
-          useValue: {},
-        },
       ],
 
       imports: [HttpModule],
