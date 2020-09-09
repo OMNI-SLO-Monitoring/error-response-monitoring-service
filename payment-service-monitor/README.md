@@ -26,7 +26,7 @@
 
 ## Description
 
-This error-response monitoring service receives a signal from the paymentsystem-service, once it receives an error response from paymentsystem-service and evaluates it. It sends a Log Message to the Issue Creator. Moreover it receives a "blueprint" for a request from the frontend and sends executes it accordingly with the given parameters to the database service and receives a response thereupon. After evaluating the response from the database service, this error-response monitor creates a log and sends it to the issue creator component as well as to the frontend for rendition in the case of an error behaviour and returns a response message in both cases.
+The Error-Response Monitor receives error messages that conform the error format and creates logs that conform the log message format out of these error messages. It inserts the logs into the the Kafka Queue which is included in the Error-Response Monitor itself. Moreover, one can also probe the certain services for semantical correctness by using the combined monitoring frontend and providing the necessary parameters for the request as well as the expected result. Failure of semantical correctness checks will naturally also induce the creation of corresponding logs.
 
 ## Installation
 
@@ -46,9 +46,8 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
-## Functionality
-- The service sits at localhost:3400
-- The endpoint /request-handler receives the "blueprint" of the request with the user-adjusted parameters from the frontend and executes the corresponding request to the database service. It will then return back a response message which is either paired with a created log message if the response does not conform the parameters or is sent individually otherwise. The log message is also sent to the issue creator component. 
-- The endpoint /messages offers monitoring services the freedom to scrape all the stored log messages.  
+## How to use
+The service is located at localhost:3400, though using the semantical correctness checks one has to see the documentation for the [combined monitoring frontend](https://github.com/ccims/monitoring-frontend/blob/dev/README.md).
+
 
 
