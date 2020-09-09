@@ -6,9 +6,9 @@ import { dbMock } from '../src/db-mock-data/database-mock';
 import { AppController } from './../src/app.controller';
 import { AppService } from './../src/app.service';
 import { getModelToken } from '@nestjs/mongoose';
-
 import { LogMessageFormat, LogType } from 'logging-format';
-
+import { of } from 'rxjs';
+import { MonitoringSelectionService } from './../src/monitoring-selection/monitoring-selection.service';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -42,6 +42,7 @@ describe('AppController (e2e)', () => {
       controllers: [AppController],
       providers: [
         AppService,
+        MonitoringSelectionService,
         {
           provide: getModelToken('selection'),
           useValue: dbMock,
