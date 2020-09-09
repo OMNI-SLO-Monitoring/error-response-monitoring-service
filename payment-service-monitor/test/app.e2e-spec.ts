@@ -37,13 +37,7 @@ describe('AppController (e2e)', () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
       controllers: [AppController],
-      providers: [
-        AppService,
-        // {
-        //   provide: getModelToken('selection'),
-        //   useValue: dbMock,
-        // },
-      ],
+      providers: [AppService],
     })
       .overrideProvider(AppService)
       .useValue(mockAppService)
