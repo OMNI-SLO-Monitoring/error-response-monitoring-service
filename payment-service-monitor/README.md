@@ -58,7 +58,7 @@ $ docker-compose up
 ```
 
 ## How to use
-The service is located at localhost:3400, though using the semantical correctness checks one has to see the documentation for the [combined monitoring frontend](https://github.com/ccims/monitoring-frontend/blob/dev/README.md).
+The service is located at localhost:3400 whereas the Kafka Queue is at localhost:9092, though using the semantical correctness checks one has to see the documentation for the [combined monitoring frontend](https://github.com/ccims/monitoring-frontend/blob/dev/README.md).
 
 
 
