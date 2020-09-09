@@ -40,7 +40,7 @@ describe('AppController (e2e)', () => {
       providers: [AppService],
     })
       .overrideProvider(AppService)
-      .useValue(mockAppService)
+      .useValue(appService)
 
       .compile();
 
