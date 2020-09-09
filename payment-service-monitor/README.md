@@ -26,7 +26,7 @@
 
 ## Description
 
-The Error-Response Monitor receives error messages that conform the error format and creates logs that conform the log message format out of these error messages. It inserts the logs into the the Kafka Queue which is included in the Error-Response Monitor itself. Moreover, one can also probe the certain services for semantical correctness by using the combined monitoring frontend and providing the necessary parameters for the request as well as the expected result. Failure of semantical correctness checks will naturally also induce the creation of corresponding logs.
+The Error-Response Monitor receives error messages that conform the error format and creates logs that conform the log message format out of these error messages. It inserts the logs into the the Kafka Queue which is included in the Error-Response Monitor itself. One can use docker compose to start the Error-Response Monitor and the Kafka Queue. Moreover, one can also probe the certain services for semantical correctness by using the combined monitoring frontend and providing the necessary parameters for the request as well as the expected result. Failure of semantical correctness checks will naturally also induce the creation of corresponding logs.
 
 ## Installation
 
