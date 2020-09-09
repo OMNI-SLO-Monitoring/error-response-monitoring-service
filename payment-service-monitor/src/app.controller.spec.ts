@@ -4,8 +4,6 @@ import { LogMessageFormat, LogType } from 'logging-format';
 import { IssueLoggingService } from 'logging-module';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { MonitoringSelectionService } from './monitoring-selection/monitoring-selection.service';
-import { getModelToken } from '@nestjs/mongoose';
 
 describe('AppController', () => {
   jest.mock('./app.service');
@@ -16,15 +14,7 @@ describe('AppController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [
-        AppService,
-        MonitoringSelectionService,
-        IssueLoggingService,
-        {
-          provide: getModelToken('selection'),
-          useValue: {},
-        },
-      ],
+      providers: [AppService, IssueLoggingService],
 
       imports: [HttpModule],
     }).compile();
@@ -46,8 +36,8 @@ describe('AppController', () => {
       {
         type: LogType.CB_OPEN,
         time: Date.now(),
-        source: 'Database Service',
-        detector: 'Price Service',
+        sourceUrl: 'Database Service',
+        detectorUrl: 'Price Service',
         data: {
           openTime: 31,
           failedResponses: 3,
@@ -62,6 +52,5 @@ describe('AppController', () => {
 
   afterEach(() => {
     jest.resetAllMocks();
-
   });
 });

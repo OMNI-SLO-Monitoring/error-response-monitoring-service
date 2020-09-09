@@ -27,8 +27,8 @@ describe('RequestSenderService', () => {
     const expectedLog: LogMessageFormat = {
       type: LogType.ERROR,
       time: Date.now(),
-      source: 'Database Service',
-      detector: 'Error Response Monitor',
+      sourceUrl: 'Database Service',
+      detectorUrl: 'Error Response Monitor',
       message: 'Incorrect Parameters',
       data: {
         expected: 30,

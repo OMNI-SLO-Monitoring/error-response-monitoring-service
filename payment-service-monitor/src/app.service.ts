@@ -35,7 +35,8 @@ export class AppService {
     await producer.send({
       topic: 'logs',
       messages: [{
-value: JSON.stringify(logMessage)}]
+        value: JSON.stringify(logMessage)
+      }]
     });
     await producer.disconnect();
   }
