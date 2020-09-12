@@ -14,10 +14,7 @@ describe('AppController', () => {
   beforeEach(async () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
-      providers: [
-        AppService,
-        IssueLoggingService,
-      ],
+      providers: [AppService, IssueLoggingService],
 
       imports: [HttpModule],
     }).compile();
@@ -39,8 +36,8 @@ describe('AppController', () => {
       {
         type: LogType.CB_OPEN,
         time: Date.now(),
-        source: 'Database Service',
-        detector: 'Price Service',
+        sourceUrl: 'Database Service',
+        detectorUrl: 'Price Service',
         data: {
           openTime: 31,
           failedResponses: 3,
@@ -55,6 +52,5 @@ describe('AppController', () => {
 
   afterEach(() => {
     jest.resetAllMocks();
-
   });
 });
