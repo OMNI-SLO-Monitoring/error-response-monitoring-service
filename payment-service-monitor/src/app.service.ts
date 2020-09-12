@@ -52,7 +52,6 @@ export class AppService {
       console.log('reporting error');
       this.sendLogMessage(error.log);
     }
-
   }
 
   /**
