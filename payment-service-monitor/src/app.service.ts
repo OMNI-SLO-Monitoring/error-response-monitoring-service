@@ -1,11 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { IssueLoggingService } from 'logging-module';
 import { LogMessageFormat, ErrorFormat } from 'logging-format';
+import { ConfigService } from '@nestjs/config';
 const {Kafka} = require('kafkajs');
 
 const kafka = new Kafka({
   clientId: 'error-monitor',
-  brokers: ['localhost:9092']
+  brokers: [new ConfigService().get<string>("KAFKA_URL", "localhost:9092")]
 });
 const producer = kafka.producer();
 

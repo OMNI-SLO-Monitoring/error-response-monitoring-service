@@ -1,4 +1,5 @@
 import { HttpModule } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
 import { Test, TestingModule } from '@nestjs/testing';
 import { LogMessageFormat, LogType } from 'logging-format';
 import { IssueLoggingService } from 'logging-module';
@@ -15,8 +16,7 @@ describe('AppController', () => {
     const app: TestingModule = await Test.createTestingModule({
       controllers: [AppController],
       providers: [AppService, IssueLoggingService],
-
-      imports: [HttpModule],
+      imports: [HttpModule, ConfigService],
     }).compile();
 
     appController = app.get<AppController>(AppController);

@@ -1,6 +1,7 @@
 import { Injectable, HttpService } from '@nestjs/common';
 import { AppService } from '../app.service';
 import { LogType, LogMessageFormat } from 'logging-format';
+import { ConfigService } from '@nestjs/config';
 
 /**
  * This service is responsible for sending a get or post request to an url and dependent on whether
@@ -17,11 +18,14 @@ export class RequestSenderService {
   private expectedResponse: any;
   //error message for false response type
   private errorResponseMsg = 'Incorrect Parameters';
+  //this service url
+  private errorResponseMonitorUrl = this.configService.get<string>("BACKEND_RESPONSE_MONITOR_URL", "http://localhost:3400/");
 
   constructor(
     private httpService: HttpService,
     private logCreator: AppService,
-  ) {}
+    private configService : ConfigService
+  ) {this.configService  =  new ConfigService()}
 
   /**
    * Upon failure, this method creates a log and sends it to the issue creator component and
@@ -42,7 +46,7 @@ export class RequestSenderService {
       type: LogType.ERROR,
       time: Date.now(),
       sourceUrl: errorSource,
-      detectorUrl: 'Error Response Monitor',
+      detectorUrl: this.errorResponseMonitorUrl,
       message: errorMessage,
       data: {
         expected: expectedResponse,

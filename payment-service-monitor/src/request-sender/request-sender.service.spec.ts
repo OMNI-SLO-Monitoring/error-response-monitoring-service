@@ -5,6 +5,7 @@ import { LogType, LogMessageFormat } from 'logging-format';
 import { HttpService, HttpModule } from '@nestjs/common';
 
 import { IssueLoggingService } from 'logging-module';
+import { ConfigService } from '@nestjs/config';
 
 jest.mock('kafkajs')
 describe('RequestSenderService', () => {
@@ -12,8 +13,8 @@ describe('RequestSenderService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [RequestSenderService, AppService, IssueLoggingService],
-      imports: [HttpModule],
+      providers: [RequestSenderService, AppService, IssueLoggingService, ConfigService],
+      imports: [HttpModule ],
     }).compile();
 
     service = module.get<RequestSenderService>(RequestSenderService);
@@ -27,8 +28,8 @@ describe('RequestSenderService', () => {
     const expectedLog: LogMessageFormat = {
       type: LogType.ERROR,
       time: Date.now(),
-      sourceUrl: 'Database Service',
-      detectorUrl: 'Error Response Monitor',
+      sourceUrl: "http://localhost:3000/",
+      detectorUrl: "http://localhost:3400/",
       message: 'Incorrect Parameters',
       data: {
         expected: 30,
@@ -37,7 +38,7 @@ describe('RequestSenderService', () => {
     };
     expect(
       await service.createAndSendLog(
-        'Database Service',
+        "http://localhost:3000/",
         'Incorrect Parameters',
         30,
         31,
