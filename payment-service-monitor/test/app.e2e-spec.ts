@@ -2,13 +2,10 @@ import { Test, TestingModule } from '@nestjs/testing';
 import { INestApplication, HttpModule, HttpService } from '@nestjs/common';
 import * as request from 'supertest';
 import { AppModule } from './../src/app.module';
-import { dbMock } from '../src/db-mock-data/database-mock';
 import { AppController } from './../src/app.controller';
 import { AppService } from './../src/app.service';
-import { getModelToken } from '@nestjs/mongoose';
-
 import { LogMessageFormat, LogType } from 'logging-format';
-
+import { of } from 'rxjs';
 
 describe('AppController (e2e)', () => {
   let app: INestApplication;
@@ -17,8 +14,8 @@ describe('AppController (e2e)', () => {
     {
       type: LogType.ERROR,
       time: Date.now(),
-      source: 'Database service',
-      detector: 'Error Response Monitor',
+      sourceUrl: 'Database service',
+      detectorUrl: 'Error Response Monitor',
       message: 'An error occurred',
       data: {
         expected: 'John',
@@ -40,16 +37,10 @@ describe('AppController (e2e)', () => {
     const moduleFixture: TestingModule = await Test.createTestingModule({
       imports: [AppModule],
       controllers: [AppController],
-      providers: [
-        AppService,
-        {
-          provide: getModelToken('selection'),
-          useValue: dbMock,
-        },
-      ],
+      providers: [AppService],
     })
       .overrideProvider(AppService)
-      .useValue(mockAppService)
+      .useValue(appService)
 
       .compile();
 

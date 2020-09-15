@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Ip } from '@nestjs/common';
 import { AppService } from './app.service';
 import { LogMessageFormat, ErrorFormat } from 'logging-format';
-import { MonitoringSelectionService } from './monitoring-selection/monitoring-selection.service';
 
 
 /**
@@ -11,31 +10,22 @@ import { MonitoringSelectionService } from './monitoring-selection/monitoring-se
 export class AppController {
   constructor(
     private readonly appService: AppService,
-    private monitoringSelectionService: MonitoringSelectionService,
   ) {}
 
   /**
-
-   *
+   * receives an error and reports it as a log to the issue creator
+   * 
    * @param error that should be reported
-   *
-   * Checks if requesting service is being monitored, if true
-   * converts an error message from a post request into the LogMessage
-   * and sends it to localhost:3500 to the issue creator
-   * Else the request is ignored
    */
   @Post()
   async convertIntoLog(@Body() error: ErrorFormat, @Ip() ip) {
-    if (
-      (await this.monitoringSelectionService.checkIfServiceIsSelected(ip))
-        .length != 0
-    ) {
-      this.appService.reportLogFromError(error)
-    }
+    this.appService.reportLogFromError(error)
   }
 
   /**
    * Json array sits on localhost:3400/messages containing all messages since server start. Returned Json array is used for UI
+   * 
+   * @returns all log messages
    */
   @Get('messages')
   async getAllMessages() {

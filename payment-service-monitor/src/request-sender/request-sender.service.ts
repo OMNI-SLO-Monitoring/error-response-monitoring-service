@@ -41,8 +41,8 @@ export class RequestSenderService {
     const log: LogMessageFormat = {
       type: LogType.ERROR,
       time: Date.now(),
-      source: errorSource,
-      detector: 'Error Response Monitor',
+      sourceUrl: errorSource,
+      detectorUrl: 'Error Response Monitor',
       message: errorMessage,
       data: {
         expected: expectedResponse,

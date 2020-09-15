@@ -35,7 +35,8 @@ export class AppService {
     await producer.send({
       topic: 'logs',
       messages: [{
-value: JSON.stringify(logMessage)}]
+        value: JSON.stringify(logMessage)
+      }]
     });
     await producer.disconnect();
   }
@@ -51,7 +52,6 @@ value: JSON.stringify(logMessage)}]
       console.log('reporting error');
       this.sendLogMessage(error.log);
     }
-
   }
 
   /**
