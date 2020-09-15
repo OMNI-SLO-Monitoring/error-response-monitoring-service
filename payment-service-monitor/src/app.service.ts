@@ -2,14 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { IssueLoggingService } from 'logging-module';
 import { LogMessageFormat, ErrorFormat } from 'logging-format';
 import { ConfigService } from '@nestjs/config';
-const {Kafka} = require('kafkajs');
+const { Kafka } = require('kafkajs');
 
 const kafka = new Kafka({
   clientId: 'error-monitor',
-  brokers: [new ConfigService().get<string>("KAFKA_URL", "localhost:9092")]
+  brokers: [new ConfigService().get<string>('KAFKA_URL', 'localhost:9092')],
 });
 const producer = kafka.producer();
-
 
 /**
  * This service is responsible for the creation and saving of error messages in an array and sending them to the issue creator
@@ -35,9 +34,11 @@ export class AppService {
     await producer.connect();
     await producer.send({
       topic: 'logs',
-      messages: [{
-        value: JSON.stringify(logMessage)
-      }]
+      messages: [
+        {
+          value: JSON.stringify(logMessage),
+        },
+      ],
     });
     await producer.disconnect();
   }
@@ -51,6 +52,7 @@ export class AppService {
     if (!this.reportedCorrelationIds.includes(error.correlationId)) {
       this.reportedCorrelationIds.push(error.correlationId);
       console.log('reporting error');
+      this.messages.push(error.log);
       this.sendLogMessage(error.log);
     }
   }

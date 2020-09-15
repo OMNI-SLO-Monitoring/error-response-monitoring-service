@@ -19,13 +19,18 @@ export class RequestSenderService {
   //error message for false response type
   private errorResponseMsg = 'Incorrect Parameters';
   //this service url
-  private errorResponseMonitorUrl = this.configService.get<string>("BACKEND_RESPONSE_MONITOR_URL", "http://localhost:3400/");
+  private errorResponseMonitorUrl = this.configService.get<string>(
+    'BACKEND_RESPONSE_MONITOR_URL',
+    'http://localhost:3400/',
+  );
 
   constructor(
     private httpService: HttpService,
     private logCreator: AppService,
-    private configService : ConfigService
-  ) {this.configService  =  new ConfigService()}
+    private configService: ConfigService,
+  ) {
+    this.configService = new ConfigService();
+  }
 
   /**
    * Upon failure, this method creates a log and sends it to the issue creator component and
@@ -83,7 +88,7 @@ export class RequestSenderService {
           if (this.receivedResponse.toString() === this.expectedResponse) {
             return { msg: res.data, log: null };
           } else {
-            const log = this.createAndSendLog(
+            const log = await this.createAndSendLog(
               this.requestUrl,
               this.errorResponseMsg,
               this.expectedResponse,
@@ -92,7 +97,7 @@ export class RequestSenderService {
             return { msg: this.errorResponseMsg, log: log };
           }
         } catch (err) {
-          const log = this.createAndSendLog(
+          const log = await this.createAndSendLog(
             this.requestUrl,
             err.message,
             this.expectedResponse,
@@ -110,7 +115,7 @@ export class RequestSenderService {
           if (this.receivedResponse.toString() === this.expectedResponse) {
             return { msg: `Status: ${res.status} | ${res.data}`, log: null };
           } else {
-            const log = this.createAndSendLog(
+            const log = await this.createAndSendLog(
               this.requestUrl,
               this.errorResponseMsg,
               this.expectedResponse,
@@ -123,7 +128,7 @@ export class RequestSenderService {
             if (this.expectedResponse === err.response.status.toString()) {
               return { msg: `Status: ${err.response.status}`, log: null };
             } else {
-              const log = this.createAndSendLog(
+              const log = await this.createAndSendLog(
                 this.requestUrl,
                 this.errorResponseMsg,
                 this.expectedResponse,
@@ -132,7 +137,7 @@ export class RequestSenderService {
               return { msg: this.errorResponseMsg, log: log };
             }
           } else {
-            const log = this.createAndSendLog(
+            const log = await this.createAndSendLog(
               this.requestUrl,
               this.errorResponseMsg,
               this.expectedResponse,
