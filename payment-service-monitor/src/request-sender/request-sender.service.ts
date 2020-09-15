@@ -1,7 +1,7 @@
 import { Injectable, HttpService } from '@nestjs/common';
 import { AppService } from '../app.service';
-import { LogType, LogMessageFormat } from 'logging-format';
 import { ConfigService } from '@nestjs/config';
+import { LogMessageFormat, LogType } from 'logging-format';
 
 /**
  * This service is responsible for sending a get or post request to an url and dependent on whether
@@ -55,11 +55,11 @@ export class RequestSenderService {
       message: errorMessage,
       data: {
         expected: expectedResponse,
-        result: receivedResponse,
+        actual: receivedResponse,
       },
     };
     await this.logCreator.createLogMsg(log);
-    await this.logCreator.sendLogMessage(log);
+    //await this.logCreator.sendLogMessage(log);
     return log;
   }
 
