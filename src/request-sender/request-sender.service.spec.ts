@@ -1,11 +1,9 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { RequestSenderService } from './request-sender.service';
-import { AppService } from '../app.service';
-import { LogType, LogMessageFormat } from 'logging-format';
-import { HttpService, HttpModule } from '@nestjs/common';
-
-import { IssueLoggingService } from 'logging-module';
+import { HttpModule } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { Test, TestingModule } from '@nestjs/testing';
+import { ErrorFormat, LogMessageFormat, LogType } from 'logging-format';
+import { AppService } from '../app.service';
+import { RequestSenderService } from './request-sender.service';
 
 jest.mock('kafkajs')
 describe('RequestSenderService', () => {
@@ -13,7 +11,7 @@ describe('RequestSenderService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [RequestSenderService, AppService, IssueLoggingService, ConfigService],
+      providers: [RequestSenderService, AppService, ConfigService],
       imports: [HttpModule ],
     }).compile();
 
@@ -36,13 +34,12 @@ describe('RequestSenderService', () => {
         actual: 31,
       },
     };
-    expect(
-      await service.createAndSendLog(
-        "http://localhost:3000/",
-        'Incorrect Parameters',
-        30,
-        31,
-      ),
-    ).toStrictEqual(expectedLog);
+    let error:ErrorFormat = await service.createAndSendLog(
+      "http://localhost:3000/",
+      'Incorrect Parameters',
+      30,
+      31,
+    );
+    expect(error.log).toStrictEqual(expectedLog);
   });
 });
