@@ -90,22 +90,22 @@ export class RequestSenderService {
           if (this.receivedResponse.toString() === this.expectedResponse) {
             return { msg: res.data, log: null };
           } else {
-            const log = await this.createAndSendLog(
+            const error = await this.createAndSendLog(
               this.requestUrl,
               this.errorResponseMsg,
               this.expectedResponse,
               this.receivedResponse,
             );
-            return { msg: this.errorResponseMsg, log: log };
+            return { msg: this.errorResponseMsg, log: error.log };
           }
         } catch (err) {
-          const log = await this.createAndSendLog(
+          const error = await this.createAndSendLog(
             this.requestUrl,
             err.message,
             this.expectedResponse,
             err.message,
           );
-          return { msg: err.message, log: log };
+          return { msg: err.message, log: error.log };
         }
       }
       case 'post': {
@@ -117,35 +117,35 @@ export class RequestSenderService {
           if (this.receivedResponse.toString() === this.expectedResponse) {
             return { msg: `Status: ${res.status} | ${res.data}`, log: null };
           } else {
-            const log = await this.createAndSendLog(
+            const error = await this.createAndSendLog(
               this.requestUrl,
               this.errorResponseMsg,
               this.expectedResponse,
               `${this.receivedResponse} Status Code`,
             );
-            return { msg: this.errorResponseMsg, log: log };
+            return { msg: this.errorResponseMsg, log: error.log };
           }
         } catch (err) {
           if (err.response) {
             if (this.expectedResponse === err.response.status.toString()) {
               return { msg: `Status: ${err.response.status}`, log: null };
             } else {
-              const log = await this.createAndSendLog(
+              const error = await this.createAndSendLog(
                 this.requestUrl,
                 this.errorResponseMsg,
                 this.expectedResponse,
                 `${err.response.status} Status Code`,
               );
-              return { msg: this.errorResponseMsg, log: log };
+              return { msg: this.errorResponseMsg, log: error.log };
             }
           } else {
-            const log = await this.createAndSendLog(
+            const error = await this.createAndSendLog(
               this.requestUrl,
               this.errorResponseMsg,
               this.expectedResponse,
               `${err.message}`,
             );
-            return { msg: err.message, log: log };
+            return { msg: err.message, log: error.log };
           }
         }
       }
