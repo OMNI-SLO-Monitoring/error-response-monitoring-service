@@ -27,6 +27,11 @@ export class AppService {
     this.messages.push(logMessage);
   }
 
+  /**
+   * Sends given log message to kafka queue
+   * 
+   * @param logMessage log message to be sent to queue. 
+   */
   async sendLogMessage(logMessage: LogMessageFormat) {
     await producer.connect();
     await producer.send({
