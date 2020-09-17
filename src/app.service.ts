@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { IssueLoggingService } from 'logging-module';
 import { LogMessageFormat, ErrorFormat } from 'logging-format';
 import { ConfigService } from '@nestjs/config';
 const { Kafka } = require('kafkajs');
@@ -18,8 +17,6 @@ export class AppService {
   messages: LogMessageFormat[] = [];
 
   reportedCorrelationIds: string[] = [];
-
-  constructor(private logger: IssueLoggingService) {}
 
   /**
    * creation of a log message and pushing that message into array 'messages'
