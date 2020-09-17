@@ -1,8 +1,8 @@
 import { Module } from '@nestjs/common';
-import { RequestSenderService } from './request-sender.service';
-import { RequestSenderController } from './request-sender.controller';
+import { HttpModule } from '@nestjs/common/http';
 import { AppService } from '../app.service';
-import { HttpModule, HttpService } from '@nestjs/common/http';
+import { RequestSenderController } from './request-sender.controller';
+import { RequestSenderService } from './request-sender.service';
 
 @Module({
   imports: [HttpModule],
