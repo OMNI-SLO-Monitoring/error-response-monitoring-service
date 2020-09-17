@@ -2,6 +2,7 @@ import { Injectable, HttpService } from '@nestjs/common';
 import { AppService } from '../app.service';
 import { ConfigService } from '@nestjs/config';
 import { ErrorFormat, LogMessageFormat, LogType } from 'logging-format';
+import { v4 as uuidv4 } from 'uuid';
 
 /**
  * This service is responsible for sending a get or post request to an url and dependent on whether
@@ -48,7 +49,7 @@ export class RequestSenderService {
     receivedResponse,
   ): Promise<ErrorFormat> {
     const error: ErrorFormat = {
-      correlationId: null,
+      correlationId: uuidv4(),
       log: {
         type: LogType.ERROR,
         time: Date.now(),
