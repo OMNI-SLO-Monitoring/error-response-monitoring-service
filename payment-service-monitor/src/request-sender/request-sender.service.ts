@@ -1,7 +1,7 @@
 import { Injectable, HttpService } from '@nestjs/common';
 import { AppService } from '../app.service';
 import { ConfigService } from '@nestjs/config';
-import { LogMessageFormat, LogType } from 'logging-format';
+import { ErrorFormat, LogMessageFormat, LogType } from 'logging-format';
 
 /**
  * This service is responsible for sending a get or post request to an url and dependent on whether
@@ -46,21 +46,23 @@ export class RequestSenderService {
     errorMessage: string,
     expectedResponse,
     receivedResponse,
-  ): Promise<LogMessageFormat> {
-    const log: LogMessageFormat = {
-      type: LogType.ERROR,
-      time: Date.now(),
-      sourceUrl: errorSource,
-      detectorUrl: this.errorResponseMonitorUrl,
-      message: errorMessage,
-      data: {
-        expected: expectedResponse,
-        actual: receivedResponse,
+  ): Promise<ErrorFormat> {
+    const error: ErrorFormat = {
+      correlationId: null,
+      log: {
+        type: LogType.ERROR,
+        time: Date.now(),
+        sourceUrl: errorSource,
+        detectorUrl: this.errorResponseMonitorUrl,
+        message: errorMessage,
+        data: {
+          expected: expectedResponse,
+          actual: receivedResponse,
+        },
       },
     };
-    await this.logCreator.createLogMsg(log);
-    //await this.logCreator.sendLogMessage(log);
-    return log;
+    await this.logCreator.reportLogFromError(error);
+    return error;
   }
 
   /**
