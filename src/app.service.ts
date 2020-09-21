@@ -10,7 +10,7 @@ const kafka = new Kafka({
 const producer = kafka.producer();
 
 /**
- * This service is responsible for the creation and saving of error messages in an array and sending them to the issue creator
+ * This service is responsible for the creation and saving of log messages in an array and sending them to the issue creator
  */
 @Injectable()
 export class AppService {
@@ -18,14 +18,6 @@ export class AppService {
 
   reportedCorrelationIds: string[] = [];
 
-  /**
-   * creation of a log message and pushing that message into array 'messages'
-   *
-   * @param logMessage log message in the LogMessageFormat
-   */
-  async createLogMsg(logMessage: LogMessageFormat) {
-    this.messages.push(logMessage);
-  }
 
   /**
    * Sends given log message to kafka queue
@@ -60,7 +52,7 @@ export class AppService {
   }
 
   /**
-   * returns all log messages created
+   * returns all created log messages during runtime of service
    *
    * @returns the messages array containing all messages
    */
