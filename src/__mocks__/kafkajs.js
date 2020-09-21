@@ -2,6 +2,9 @@
 
 const kafkajs = jest.genMockFromModule('kafkajs');
 
+/**
+ * mock Kafka queue for unit tests
+ */
 class Producer {
 
   async connect() {
