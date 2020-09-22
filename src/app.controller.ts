@@ -23,7 +23,7 @@ export class AppController {
   }
 
   /**
-   * Returns list of all log messages reived during runtime of service
+   * Returns list of all log messages received during runtime of service
    * 
    * @returns all received log messages
    */

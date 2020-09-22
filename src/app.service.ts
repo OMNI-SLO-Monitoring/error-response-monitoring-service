@@ -52,7 +52,7 @@ export class AppService {
   }
 
   /**
-   * returns all created log messages during runtime of service
+   * returns all log messages created during runtime of service
    *
    * @returns the messages array containing all messages
    */
