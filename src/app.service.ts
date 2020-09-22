@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import { IssueLoggingService } from 'logging-module';
 import { LogMessageFormat, ErrorFormat } from 'logging-format';
 import { ConfigService } from '@nestjs/config';
 const { Kafka } = require('kafkajs');
@@ -11,7 +10,7 @@ const kafka = new Kafka({
 const producer = kafka.producer();
 
 /**
- * This service is responsible for the creation and saving of error messages in an array and sending them to the issue creator
+ * This service is responsible for the creation and saving of log messages in an array and sending them to the issue creator
  */
 @Injectable()
 export class AppService {
@@ -19,17 +18,12 @@ export class AppService {
 
   reportedCorrelationIds: string[] = [];
 
-  constructor(private logger: IssueLoggingService) {}
 
   /**
-   * creation of a log message and pushing that message into array 'messages'
-   *
-   * @param logMessage log message in the LogMessageFormat
+   * Sends given log message to kafka queue
+   * 
+   * @param logMessage log message to be sent to queue. 
    */
-  async createLogMsg(logMessage: LogMessageFormat) {
-    this.messages.push(logMessage);
-  }
-
   async sendLogMessage(logMessage: LogMessageFormat) {
     await producer.connect();
     await producer.send({
@@ -58,7 +52,7 @@ export class AppService {
   }
 
   /**
-   * returns all log messages created
+   * returns all log messages created during runtime of service
    *
    * @returns the messages array containing all messages
    */

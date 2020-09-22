@@ -1,8 +1,8 @@
-import { Injectable, HttpService } from '@nestjs/common';
-import { AppService } from '../app.service';
+import { HttpService, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { ErrorFormat, LogMessageFormat, LogType } from 'logging-format';
+import { ErrorFormat, LogType } from 'logging-format';
 import { v4 as uuidv4 } from 'uuid';
+import { AppService } from '../app.service';
 
 /**
  * This service is responsible for sending a get or post request to an url and dependent on whether
@@ -73,6 +73,7 @@ export class RequestSenderService {
    * An appropriate response with the log is additionally returned for the UI to display.
    *
    * @param requestParams post body with request parameters
+   * 
    * @returns an object that contains a message field named msg and a log field named log.
    * Depending on the outcome of the request, the log field is populated and the message is set
    * accordingly. The msg field is set to the fetched response data when it matches with the

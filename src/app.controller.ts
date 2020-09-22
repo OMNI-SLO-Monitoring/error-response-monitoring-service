@@ -1,6 +1,6 @@
-import { Controller, Get, Post, Body, Ip } from '@nestjs/common';
+import { Body, Controller, Get, Post } from '@nestjs/common';
+import { ErrorFormat } from 'logging-format';
 import { AppService } from './app.service';
-import { LogMessageFormat, ErrorFormat } from 'logging-format';
 
 
 /**
@@ -18,14 +18,14 @@ export class AppController {
    * @param error that should be reported
    */
   @Post()
-  async convertIntoLog(@Body() error: ErrorFormat, @Ip() ip) {
+  async convertIntoLog(@Body() error: ErrorFormat) {
     this.appService.reportLogFromError(error)
   }
 
   /**
-   * Json array sits on localhost:3400/messages containing all messages since server start. Returned Json array is used for UI
+   * Returns list of all log messages received during runtime of service
    * 
-   * @returns all log messages
+   * @returns all received log messages
    */
   @Get('messages')
   async getAllMessages() {

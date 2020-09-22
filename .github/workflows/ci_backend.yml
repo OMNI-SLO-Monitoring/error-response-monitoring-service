@@ -1,10 +1,6 @@
 name: ci backend
 on: [push, pull_request]
 
-defaults:
-  run:
-    working-directory: payment-service-monitor
-
 jobs:
   build: 
     runs-on: ${{ matrix.os }}

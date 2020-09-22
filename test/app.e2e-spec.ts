@@ -19,7 +19,7 @@ describe('AppController (e2e)', () => {
       message: 'An error occurred',
       data: {
         expected: 'John',
-        result: 'Jeff',
+        actual: 'Jeff',
       },
     },
   ];
