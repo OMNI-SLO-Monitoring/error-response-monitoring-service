@@ -6,7 +6,7 @@ const { Kafka } = require('kafkajs');
 
 const kafka = new Kafka({
   clientId: 'error-monitor',
-  brokers: [new ConfigService().get<string>('KAFKA_URL', 'localhost:9092')],
+  brokers: [new ConfigService().get<string>('KAFKA_URL', 'kafka:9092')],
 });
 const producer = kafka.producer();
 
