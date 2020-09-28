@@ -1,6 +1,5 @@
 import { HttpService, Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
-import { request } from 'http';
 import { ErrorFormat, LogType } from 'logging-format';
 import { v4 as uuidv4 } from 'uuid';
 import { AppService } from '../app.service';

@@ -16,7 +16,7 @@ const producer = kafka.producer();
 export class AppService {
   messages: LogMessageFormat[] = [];
 
-  reportedCorrelationIds: string[] = [];
+  reportedCorrelationIds = new Set();
 
 
   /**
@@ -43,8 +43,8 @@ export class AppService {
    */
   async reportLogFromError(error: ErrorFormat) {
     console.log('received error to report');
-    if (!this.reportedCorrelationIds.includes(error.correlationId)) {
-      this.reportedCorrelationIds.push(error.correlationId);
+    if (!this.reportedCorrelationIds.has(error.correlationId)) {
+      this.reportedCorrelationIds.add(error.correlationId);
       console.log('reporting error');
       this.messages.push(error.log);
       this.sendLogMessage(error.log);
